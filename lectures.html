@@ -1,0 +1,2372 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Lecture Cheat Sheet | SSD Lab Quiz</title>
+  <meta name="description" content="A searchable ICT2216 / ICT2516C lecture cheat sheet linked directly to the practical labs.">
+  <link rel="canonical" href="https://spooky312.github.io/SSD-lab-quiz/lectures.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SSD Lab Quiz - Lecture Cheat Sheet">
+  <meta property="og:description" content="Secure software development lecture concepts linked to requirements, threat modeling, design, implementation, and testing labs.">
+  <meta property="og:url" content="https://spooky312.github.io/SSD-lab-quiz/lectures.html">
+  <style>
+    :root {
+      --bg: #f4f6f2;
+      --surface: #ffffff;
+      --surface-2: #edf1eb;
+      --text: #17201b;
+      --muted: #5e6a62;
+      --line: #d8ded8;
+      --accent: #176c4b;
+      --accent-2: #0d4f37;
+      --accent-soft: #dff2e8;
+      --code-bg: #111a16;
+      --code-text: #e9f4ed;
+      --warning: #9b4d08;
+      --shadow: 0 18px 50px rgba(28, 47, 37, 0.09);
+      --radius: 16px;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f1512;
+      --surface: #161e1a;
+      --surface-2: #202a25;
+      --text: #ecf3ee;
+      --muted: #a4b1a9;
+      --line: #2c3831;
+      --accent: #6dd2a3;
+      --accent-2: #9ce9c4;
+      --accent-soft: #173c2c;
+      --code-bg: #0a0f0c;
+      --code-text: #e9f4ed;
+      --warning: #ffb46f;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 112px; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.65; }
+    button, input { font: inherit; }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:hover { color: var(--accent-2); }
+    .source-label { color: var(--muted); font-style: italic; }
+
+    .skip-link { position: fixed; left: 12px; top: -80px; z-index: 100; padding: 10px 14px; color: white; background: var(--accent-2); border-radius: 8px; }
+    .skip-link:focus { top: 12px; }
+
+    .topbar { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: 1500px; margin: auto; min-height: 76px; padding: 12px 24px; display: flex; align-items: center; gap: 18px; }
+    .brand { min-width: 250px; line-height: 1.2; }
+    .brand strong { display: block; font-size: 15px; letter-spacing: 0.01em; }
+    .brand span { color: var(--muted); font-size: 12px; }
+    .tabs { display: flex; gap: 6px; overflow-x: auto; padding: 3px; }
+    .tab, .icon-button, .toc-group-title { border: 0; cursor: pointer; color: var(--muted); background: transparent; }
+    .tab { white-space: nowrap; padding: 9px 13px; border-radius: 9px; font-size: 13px; font-weight: 700; text-decoration: none; }
+    .tab:hover { color: var(--text); background: var(--surface-2); }
+    .tab.is-active { color: var(--accent-2); background: var(--accent-soft); }
+    .top-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .icon-button { width: 40px; height: 40px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; color: var(--text); }
+    .icon-button:hover { border-color: var(--accent); }
+
+    .layout { width: min(1500px, 100%); margin: 0 auto; display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 34px; padding: 28px 24px 72px; }
+    .sidebar { position: sticky; top: 104px; height: calc(100vh - 128px); overflow: hidden; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .search-wrap { padding: 16px; border-bottom: 1px solid var(--line); }
+    .search-label { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
+    #topic-search { width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); padding: 10px 12px; outline: none; }
+    #topic-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .toc { overflow-y: auto; padding: 10px; }
+    .toc-group { margin-bottom: 8px; }
+    .toc-group-title { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 9px 10px; border-radius: 8px; color: var(--text); font-size: 13px; font-weight: 800; text-align: left; }
+    .toc-group-title:hover { background: var(--surface-2); }
+    .toc-group-title small { min-width: 24px; padding: 1px 6px; text-align: center; background: var(--surface-2); border-radius: 999px; color: var(--muted); }
+    .toc-links { display: grid; padding: 2px 0 6px 10px; }
+    .toc-link { padding: 6px 10px; border-left: 2px solid var(--line); color: var(--muted); text-decoration: none; font-size: 12px; line-height: 1.35; }
+    .toc-link:hover, .toc-link.is-current { color: var(--accent-2); border-left-color: var(--accent); background: var(--accent-soft); }
+    .toc-link.is-filtered { display: none; }
+    .toc-group.is-filtered { display: none; }
+
+    main { min-width: 0; }
+    .doc-panel { display: none; max-width: 1000px; margin: 0 auto; padding: clamp(28px, 5vw, 66px); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .doc-panel.is-active { display: block; animation: reveal 180ms ease-out; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .article-kicker { margin-bottom: 12px; color: var(--accent); font-size: 12px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    h1, h2, h3 { line-height: 1.22; letter-spacing: -0.02em; }
+    h1 { margin: 0 0 26px; font-size: clamp(32px, 5vw, 54px); }
+    h2 { margin: 64px 0 18px; padding-top: 12px; border-top: 1px solid var(--line); font-size: clamp(24px, 3vw, 34px); }
+    h3 { margin: 36px 0 12px; font-size: 20px; }
+    h1:first-of-type { max-width: 780px; }
+    h1 .heading-anchor, h2 .heading-anchor, h3 .heading-anchor { margin-left: 8px; opacity: 0; font-size: 0.6em; text-decoration: none; }
+    h1:hover .heading-anchor, h2:hover .heading-anchor, h3:hover .heading-anchor, .heading-anchor:focus { opacity: 1; }
+    p { margin: 12px 0; }
+    ul, ol { padding-left: 24px; }
+    li { margin: 5px 0; }
+    hr { margin: 50px 0; border: 0; border-top: 1px solid var(--line); }
+    blockquote { margin: 20px 0; padding: 14px 18px; border-left: 4px solid var(--warning); background: color-mix(in srgb, var(--warning) 9%, transparent); border-radius: 0 10px 10px 0; }
+    blockquote p { margin: 0; }
+
+    .table-wrap { width: 100%; overflow-x: auto; margin: 22px 0; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { color: var(--text); background: var(--surface-2); text-align: left; }
+    th, td { padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+
+    code { padding: 0.12em 0.36em; border-radius: 5px; background: var(--surface-2); color: var(--accent-2); font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 0.9em; }
+    .code-shell { margin: 18px 0 24px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--code-bg) 72%, white); border-radius: 12px; background: var(--code-bg); }
+    .code-bar { display: flex; justify-content: space-between; align-items: center; min-height: 38px; padding: 5px 8px 5px 14px; color: #a9b8af; border-bottom: 1px solid #2a3931; font-family: "SFMono-Regular", Consolas, monospace; font-size: 11px; text-transform: uppercase; }
+    .copy-code { border: 1px solid #394a40; background: #1a2720; color: #dbe8e0; padding: 5px 9px; border-radius: 7px; cursor: pointer; font-size: 11px; }
+    .copy-code:hover { background: #25372e; }
+    pre { margin: 0; padding: 18px; overflow-x: auto; color: var(--code-text); line-height: 1.55; tab-size: 2; }
+    pre code { padding: 0; color: inherit; background: transparent; font-size: 12px; }
+
+    .mobile-menu { display: none; }
+    .back-to-top { position: fixed; right: 24px; bottom: 24px; z-index: 20; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--text); box-shadow: var(--shadow); cursor: pointer; opacity: 0; transform: translateY(8px); pointer-events: none; transition: 160ms ease; }
+    .back-to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+
+    @media (max-width: 900px) {
+      .topbar-inner { padding: 10px 14px; }
+      .brand { min-width: 0; flex: 1; }
+      .brand span { display: none; }
+      .tabs { display: none; }
+      .mobile-menu { display: inline-grid; place-items: center; }
+      .layout { display: block; padding: 14px 12px 60px; }
+      .sidebar { display: none; position: fixed; inset: 74px 12px 12px; z-index: 40; height: auto; }
+      .sidebar.is-open { display: flex; }
+      .doc-panel { padding: 26px 20px 42px; border-radius: 13px; }
+      h2 { margin-top: 48px; }
+    }
+
+    @media print {
+      .topbar, .sidebar, .back-to-top, .copy-code, .heading-anchor { display: none !important; }
+      body { background: white; color: black; }
+      .layout { display: block; padding: 0; }
+      .doc-panel { display: block !important; max-width: none; margin: 0; padding: 24px; border: 0; box-shadow: none; break-after: page; }
+      a { color: black; text-decoration: none; }
+      .code-shell { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><strong>SSD Lab Quiz</strong><span>Secure Software Development reference</span></div>
+      <nav class="tabs" aria-label="Reference pages"><a class="tab" href="index.html">Lab Reference</a><a class="tab is-active" href="lectures.html" aria-current="page">Lecture Cheat Sheet</a></nav>
+      <div class="top-actions">
+        <button class="icon-button mobile-menu" id="menu-toggle" type="button" aria-label="Open topics" aria-expanded="false">☰</button>
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle dark mode">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Topic navigation">
+      <div class="search-wrap">
+        <label class="search-label" for="topic-search">Find a topic</label>
+        <input id="topic-search" type="search" placeholder="OWASP, requirements, STRIDE…" autocomplete="off">
+      </div>
+      <nav class="toc"><section class="toc-group" data-doc-group="lecture"><button class="toc-group-title" type="button" data-panel="lecture"><span>Lecture Cheat Sheet</span><small>18</small></button><div class="toc-links"><a class="toc-link" href="#lecture--fast-lecture-to-lab-map" data-doc="lecture" data-search="fast lecture-to-lab map">Fast lecture-to-lab map</a><a class="toc-link" href="#lecture--lecture-1-p1---module-overview-and-the-ssdlc" data-doc="lecture" data-search="lecture 1-p1 - module overview and the ssdlc">Lecture 1-P1 - Module overview and the SSDLC</a><a class="toc-link" href="#lecture--lecture-1-p2---secure-software-concepts-i" data-doc="lecture" data-search="lecture 1-p2 - secure software concepts i">Lecture 1-P2 - Secure software concepts I</a><a class="toc-link" href="#lecture--lecture-2-p1---vulnerability-tracking-and-assurance-maturity" data-doc="lecture" data-search="lecture 2-p1 - vulnerability tracking and assurance maturity">Lecture 2-P1 - Vulnerability tracking and assurance maturity</a><a class="toc-link" href="#lecture--lecture-2-p2---secure-software-requirements-i" data-doc="lecture" data-search="lecture 2-p2 - secure software requirements i">Lecture 2-P2 - Secure software requirements I</a><a class="toc-link" href="#lecture--lecture-3-p1---secure-software-requirements-ii" data-doc="lecture" data-search="lecture 3-p1 - secure software requirements ii">Lecture 3-P1 - Secure software requirements II</a><a class="toc-link" href="#lecture--lecture-3-p2---threat-modeling" data-doc="lecture" data-search="lecture 3-p2 - threat modeling">Lecture 3-P2 - Threat modeling</a><a class="toc-link" href="#lecture--lecture-4---secure-software-design-i" data-doc="lecture" data-search="lecture 4 - secure software design i">Lecture 4 - Secure software design I</a><a class="toc-link" href="#lecture--lecture-5---secure-software-design-ii" data-doc="lecture" data-search="lecture 5 - secure software design ii">Lecture 5 - Secure software design II</a><a class="toc-link" href="#lecture--lecture-55---introduction-to-the-second-half" data-doc="lecture" data-search="lecture 5.5 - introduction to the second half">Lecture 5.5 - Introduction to the second half</a><a class="toc-link" href="#lecture--lecture-6---secure-implementation-i" data-doc="lecture" data-search="lecture 6 - secure implementation i">Lecture 6 - Secure implementation I</a><a class="toc-link" href="#lecture--lecture-7---secure-implementation-ii-coding" data-doc="lecture" data-search="lecture 7 - secure implementation ii: coding">Lecture 7 - Secure implementation II: coding</a><a class="toc-link" href="#lecture--lecture-8---secure-implementation-iii-testing" data-doc="lecture" data-search="lecture 8 - secure implementation iii: testing">Lecture 8 - Secure implementation III: testing</a><a class="toc-link" href="#lecture--lecture-9---static-code-analysis-i" data-doc="lecture" data-search="lecture 9 - static code analysis i">Lecture 9 - Static code analysis I</a><a class="toc-link" href="#lecture--detailed-lecture-to-lab-traceability-matrix" data-doc="lecture" data-search="detailed lecture-to-lab traceability matrix">Detailed lecture-to-lab traceability matrix</a><a class="toc-link" href="#lecture--reverse-lookup-start-from-the-lab" data-doc="lecture" data-search="reverse lookup: start from the lab">Reverse lookup: start from the lab</a><a class="toc-link" href="#lecture--quiz-and-exam-quick-recall" data-doc="lecture" data-search="quiz and exam quick recall">Quiz and exam quick recall</a><a class="toc-link" href="#lecture--end-to-end-project-workflow" data-doc="lecture" data-search="end-to-end project workflow">End-to-end project workflow</a></div></section></nav>
+    </aside>
+
+    <main id="main-content"><article class="doc-panel is-active" data-panel-content="lecture" id="lecture--top"><div class="article-kicker">Lectures 1-P1 through 9</div><h1 id="lecture--secure-software-development-lectures---cheat-sheet" tabindex="-1">Secure Software Development Lectures - Cheat Sheet<a class="heading-anchor" href="#lecture--secure-software-development-lectures---cheat-sheet" aria-label="Link to Secure Software Development Lectures - Cheat Sheet">#</a></h1><p><a href="index.html">← Back to the complete lab reference</a></p>
+<p>This page condenses Lectures 1-P1 through 9 and shows where each lecture concept is applied in the labs. Use it to move from <strong>theory</strong> to <strong>evidence</strong>:</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Concept -&gt; Requirement -&gt; Threat -&gt; Design control -&gt; Implementation
+        -&gt; Test or scan -&gt; Evidence -&gt; Residual risk</code></pre></div><blockquote>
+<p>The lecture slides are labelled “SIT Internal.” This page summarizes the concepts without publishing the original decks. The slides and lecturer remain authoritative for assessment wording.</p>
+</blockquote>
+<h2 id="lecture--fast-lecture-to-lab-map" tabindex="-1">Fast lecture-to-lab map<a class="heading-anchor" href="#lecture--fast-lecture-to-lab-map" aria-label="Link to Fast lecture-to-lab map">#</a></h2><table>
+<thead>
+<tr>
+<th>Lecture</th>
+<th>Core question</th>
+<th>Main concepts</th>
+<th>Closest labs</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1-P1 Module Overview</td>
+<td>Why build security into the lifecycle?</td>
+<td>SSDLC, quality gates, security in sprints</td>
+<td><a href="index.html#cheat--lab-1---docker-and-docker-compose">Lab 1</a>, <a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a>, all later labs</td>
+</tr>
+<tr>
+<td>1-P2 Secure Software Concepts I</td>
+<td>What commonly goes wrong?</td>
+<td>OWASP Top 10, vulnerabilities, insecure design</td>
+<td><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a>, <a href="index.html#cheat--x06---software-composition-analysis">X06</a>, <a href="index.html#cheat--x08---static-code-analysis">X08</a>, <a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a</a></td>
+</tr>
+<tr>
+<td>2-P1 Secure Software Concepts II</td>
+<td>How do we track weaknesses and improve maturity?</td>
+<td>CVE, NVD, CVSS, CAPEC, ATT&amp;CK, BSIMM, SAMM, Microsoft SDL</td>
+<td><a href="index.html#cheat--x06---software-composition-analysis">X06</a>, <a href="index.html#cheat--x08---static-code-analysis">X08</a>, <a href="index.html#cheat--x09---sonarqube">X09</a></td>
+</tr>
+<tr>
+<td>2-P2 Secure Requirements I</td>
+<td>What must the system protect?</td>
+<td>Functional/non-functional security requirements, CIA, authentication</td>
+<td><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a></td>
+</tr>
+<tr>
+<td>3-P1 Secure Requirements II</td>
+<td>How do we make requirements adversary-aware and testable?</td>
+<td>Authorization, accountability, session/error/configuration management, anti-requirements, misuse cases</td>
+<td><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a>, <a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a></td>
+</tr>
+<tr>
+<td>3-P2 Threat Modeling</td>
+<td>What can attack this design?</td>
+<td>Trust boundaries, DFDs, mis-actors, attack trees, STRIDE</td>
+<td><a href="index.html#cheat--x03---microsoft-threat-modeling-tool">X03</a>, <a href="index.html#cheat--x04---owasp-threat-dragon">X04</a></td>
+</tr>
+<tr>
+<td>4 Secure Design I</td>
+<td>Which principles prevent design flaws?</td>
+<td>Attack surface, secure defaults, least privilege, defense in depth, fail securely</td>
+<td><a href="index.html#cheat--x03---microsoft-threat-modeling-tool">X03</a>, <a href="index.html#cheat--x04---owasp-threat-dragon">X04</a>, <a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a></td>
+</tr>
+<tr>
+<td>5 Secure Design II</td>
+<td>How do CIA and AAA become architecture?</td>
+<td>Cryptography, integrity, availability, RBAC, audit design, secure architecture</td>
+<td><a href="index.html#cheat--lab-1---docker-and-docker-compose">Lab 1</a>, <a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a>, <a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a>, <a href="index.html#cheat--x09---sonarqube">X09</a></td>
+</tr>
+<tr>
+<td>5.5 Second-half introduction</td>
+<td>What evidence connects design, implementation, and verification?</td>
+<td>D2/D3 evidence, CI/CD history, login/session/access-control implementation, repository freeze</td>
+<td><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a>, <a href="index.html#cheat--x06---software-composition-analysis">X06</a>, <a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a></td>
+</tr>
+<tr>
+<td>6 Secure Implementation I</td>
+<td>How does security become part of delivery and authentication?</td>
+<td>DevSecOps, CI/CD, TLS/HSTS/PFS, password storage, passwordless, FIDO/passkeys</td>
+<td><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a>, <a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a>, <a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a></td>
+</tr>
+<tr>
+<td>7 Secure Implementation II</td>
+<td>Which coding practices prevent common weaknesses?</td>
+<td>OWASP Proactive Controls, validation, ReDoS, parameterized SQL, dependency security, safe logging</td>
+<td><a href="index.html#cheat--x06---software-composition-analysis">X06</a>, <a href="index.html#cheat--x08---static-code-analysis">X08</a>, <a href="index.html#cheat--x09---sonarqube">X09</a>, <a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a</a></td>
+</tr>
+<tr>
+<td>8 Secure Implementation III</td>
+<td>How do we verify security requirements?</td>
+<td>Testing pyramid, unit/integration/UI tests, ASVS, WSTG, authentication and logging tests</td>
+<td><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a>, <a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a</a>, <a href="index.html#cheat--x11b---fuzzing-with-burp-suite">X11b</a></td>
+</tr>
+<tr>
+<td>9 Static Code Analysis I</td>
+<td>What can code analysis prove without running the program?</td>
+<td>SAST spectrum, data/control flow, abstract interpretation, model checking, false positives/negatives</td>
+<td><a href="index.html#cheat--x08---static-code-analysis">X08</a>, <a href="index.html#cheat--x09---sonarqube">X09</a></td>
+</tr>
+</tbody></table>
+<h2 id="lecture--lecture-1-p1---module-overview-and-the-ssdlc" tabindex="-1">Lecture 1-P1 - Module overview and the SSDLC<a class="heading-anchor" href="#lecture--lecture-1-p1---module-overview-and-the-ssdlc" aria-label="Link to Lecture 1-P1 - Module overview and the SSDLC">#</a></h2><h3 id="lecture--the-central-idea" tabindex="-1">The central idea<a class="heading-anchor" href="#lecture--the-central-idea" aria-label="Link to The central idea">#</a></h3><p>Security cannot be added only after the functional features are finished. Secure software development places security activities throughout the software development lifecycle:</p>
+<ol>
+<li>Secure concepts and governance</li>
+<li>Secure requirements</li>
+<li>Secure design and threat modeling</li>
+<li>Secure implementation and coding</li>
+<li>Secure testing and verification</li>
+<li>Secure deployment, vulnerability management, and incident response</li>
+</ol>
+<p>The module’s practical work follows the same order. Lab 1 establishes the development environment; Lab 2 defines security requirements; X03/X04 model threats; X05-X09 automate controls and analysis; X11 verifies a running application.</p>
+<h3 id="lecture--security-quality-gates" tabindex="-1">Security quality gates<a class="heading-anchor" href="#lecture--security-quality-gates" aria-label="Link to Security quality gates">#</a></h3><p>A <strong>quality gate</strong> is an explicit pass/fail decision before work moves forward. Security gates should use evidence rather than intuition.</p>
+<table>
+<thead>
+<tr>
+<th>Lifecycle point</th>
+<th>Example gate</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Requirements</td>
+<td>High-risk assets have testable security requirements</td>
+<td>Requirement and traceability matrix</td>
+</tr>
+<tr>
+<td>Design</td>
+<td>High-priority threats have approved controls</td>
+<td>Threat-model report and design review</td>
+</tr>
+<tr>
+<td>Pull request</td>
+<td>Tests and agreed static checks pass</td>
+<td>CI workflow run and SARIF results</td>
+</tr>
+<tr>
+<td>Release candidate</td>
+<td>Dependencies and application are assessed</td>
+<td>SCA, SAST, DAST, and test reports</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>Secrets, TLS, logging, recovery, and monitoring are ready</td>
+<td>Deployment checklist and operational test</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--security-inside-a-sprint" tabindex="-1">Security inside a sprint<a class="heading-anchor" href="#lecture--security-inside-a-sprint" aria-label="Link to Security inside a sprint">#</a></h3><p>Security work belongs in the backlog and definition of done:</p>
+<ul>
+<li>refine security acceptance criteria with the feature;</li>
+<li>update threats when architecture or data flows change;</li>
+<li>implement controls with the feature rather than as a separate late task;</li>
+<li>add positive, negative, and abuse-case tests;</li>
+<li>run automated checks in CI;</li>
+<li>record residual risk and follow-up work.</li>
+</ul>
+<h3 id="lecture--learning-outcomes-translated-into-deliverables" tabindex="-1">Learning outcomes translated into deliverables<a class="heading-anchor" href="#lecture--learning-outcomes-translated-into-deliverables" aria-label="Link to Learning outcomes translated into deliverables">#</a></h3><table>
+<thead>
+<tr>
+<th>Learning outcome</th>
+<th>Concrete deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Recognize security across the lifecycle</td>
+<td>SSDLC plan and security gates</td>
+</tr>
+<tr>
+<td>Model requirements and threats</td>
+<td>Requirement matrix, misuse cases, DFD, STRIDE report</td>
+</tr>
+<tr>
+<td>Apply design principles</td>
+<td>Architecture decisions and control mapping</td>
+</tr>
+<tr>
+<td>Implement secure code</td>
+<td>Reviewed code, dependency controls, CI checks</td>
+</tr>
+<tr>
+<td>Verify security</td>
+<td>Automated tests, SAST/SCA/DAST reports, remediation evidence</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--how-it-links-to-the-labs" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-1---docker-and-docker-compose">Lab 1</a> provides repeatable infrastructure for later controls.</li>
+<li><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a> begins the first major security gate.</li>
+<li><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a> turns repeated build/test activities into CI.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06-X09</a> supply automated evidence.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a/X11b</a> verify the running system from an attacker-facing perspective.</li>
+</ul>
+<p>Source basis: Lecture 1-P1, Module Overview, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-1-p2---secure-software-concepts-i" tabindex="-1">Lecture 1-P2 - Secure software concepts I<a class="heading-anchor" href="#lecture--lecture-1-p2---secure-software-concepts-i" aria-label="Link to Lecture 1-P2 - Secure software concepts I">#</a></h2><h3 id="lecture--why-application-security-is-necessary" tabindex="-1">Why application security is necessary<a class="heading-anchor" href="#lecture--why-application-security-is-necessary" aria-label="Link to Why application security is necessary">#</a></h3><p>Firewalls and intrusion detection cannot correct insecure application logic. Application security must handle risks such as:</p>
+<ul>
+<li>missing object-level authorization;</li>
+<li>unsafe password recovery;</li>
+<li>injection caused by mixing instructions and untrusted data;</li>
+<li>insecure defaults and exposed administrative functions;</li>
+<li>weak secrets or cryptography;</li>
+<li>vulnerable dependencies;</li>
+<li>missing logging, alerting, and safe error handling.</li>
+</ul>
+<p>The case-study pattern is consistent: security was omitted from the design, a developer made an implementation mistake, or delivery pressure prevented adequate review.</p>
+<h3 id="lecture--vulnerability-threat-risk-flaw-and-bug" tabindex="-1">Vulnerability, threat, risk, flaw, and bug<a class="heading-anchor" href="#lecture--vulnerability-threat-risk-flaw-and-bug" aria-label="Link to Vulnerability, threat, risk, flaw, and bug">#</a></h3><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Asset</td>
+<td>Something valuable that needs protection</td>
+</tr>
+<tr>
+<td>Threat</td>
+<td>A potential cause of harm, including an actor or event</td>
+</tr>
+<tr>
+<td>Vulnerability</td>
+<td>A weakness that could be exploited or triggered</td>
+</tr>
+<tr>
+<td>Exploit</td>
+<td>A method or action that uses a vulnerability</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td>The harm if the event occurs</td>
+</tr>
+<tr>
+<td>Likelihood</td>
+<td>How plausible/frequent the event is in context</td>
+</tr>
+<tr>
+<td>Risk</td>
+<td>A contextual combination of likelihood and impact</td>
+</tr>
+<tr>
+<td>Design flaw</td>
+<td>Security weakness in architecture or intended behavior</td>
+</tr>
+<tr>
+<td>Implementation bug</td>
+<td>Incorrect code or configuration implementing a design</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--owasp-top-10-lecture-summary" tabindex="-1">OWASP Top 10 lecture summary<a class="heading-anchor" href="#lecture--owasp-top-10-lecture-summary" aria-label="Link to OWASP Top 10 lecture summary">#</a></h3><p>The lecture uses the 2025 categories. Memorize the idea and control family, not just the number.</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Recognize it</th>
+<th>Design/implementation response</th>
+<th>Lab evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A01 Broken Access Control</td>
+<td>User reaches another user’s object or an admin function</td>
+<td>Deny by default; server-side role and ownership checks; test every action</td>
+<td>Lab 2 authorization matrix; X07 negative tests; X11a alerts</td>
+</tr>
+<tr>
+<td>A02 Security Misconfiguration</td>
+<td>Defaults, samples, listings, stack traces, open cloud storage</td>
+<td>Hardened baseline; minimum services; safe errors; reviewed configuration</td>
+<td>Lab 1 Compose; X05 Nginx/TLS; X09 review</td>
+</tr>
+<tr>
+<td>A03 Software Supply Chain Failures</td>
+<td>Vulnerable/malicious component or update pipeline</td>
+<td>Inventory, pinning, integrity, trusted sources, SCA, controlled updates</td>
+<td>X06 Dependency-Check/Dependabot; X05 CI</td>
+</tr>
+<tr>
+<td>A04 Cryptographic Failures</td>
+<td>Cleartext data, weak algorithms, poor key handling, invalid certificate acceptance</td>
+<td>Classify data; TLS; approved primitives; secret/key lifecycle</td>
+<td>Lab 2 confidentiality; X05 TLS</td>
+</tr>
+<tr>
+<td>A05 Injection</td>
+<td>Untrusted input changes SQL, commands, HTML, or other interpreter behavior</td>
+<td>Parameterization, contextual output encoding, validation, least privilege</td>
+<td>X08 static rules; X11a/X11b testing</td>
+</tr>
+<tr>
+<td>A06 Insecure Design</td>
+<td>Missing control or unsafe workflow even if code matches design</td>
+<td>Threat modeling, misuse cases, secure patterns, business limits</td>
+<td>Lab 2; X03/X04; Lectures 3-P2 and 4</td>
+</tr>
+<tr>
+<td>A07 Authentication Failures</td>
+<td>Credential stuffing, weak recovery, persistent/unsafe sessions</td>
+<td>MFA, secure recovery, rate controls, robust session lifecycle</td>
+<td>Lab 2 authentication requirements; X07/X11b tests</td>
+</tr>
+<tr>
+<td>A08 Software and Data Integrity Failures</td>
+<td>Unsigned update, compromised CI, unsafe deserialization</td>
+<td>Verify provenance/signatures; least-privilege CI; safe formats</td>
+<td>X05 Actions; X06 SCA; X08 CodeQL</td>
+</tr>
+<tr>
+<td>A09 Security Logging and Alerting Failures</td>
+<td>Important events missing or never acted upon</td>
+<td>Audit design, central monitoring, alerts, protected logs, response process</td>
+<td>Lab 2 accountability; X09 findings; X11 scans should trigger monitoring</td>
+</tr>
+<tr>
+<td>A10 Mishandling Exceptional Conditions</td>
+<td>Failing open, leaked stack trace, incomplete rollback, resource leakage</td>
+<td>Fail closed; bounded resources; rollback; safe user errors; internal diagnostics</td>
+<td>Lecture 3-P1 error requirements; X07 failure tests; X08 analysis</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--example-reasoning-unsafe-balance-functions" tabindex="-1">Example reasoning: unsafe balance functions<a class="heading-anchor" href="#lecture--example-reasoning-unsafe-balance-functions" aria-label="Link to Example reasoning: unsafe balance functions">#</a></h3><p>For <code>decrease(amount)</code> and <code>increase(amount)</code>, ask beyond the visible balance check:</p>
+<ul>
+<li>Can <code>amount</code> be negative, zero, too large, non-integer, or overflow the type?</li>
+<li>Can two requests race and both pass the balance check?</li>
+<li>Is authorization checked for the account and action?</li>
+<li>Is the update atomic and durable?</li>
+<li>Is the transaction logged without leaking sensitive data?</li>
+<li>What happens if the database or network fails midway?</li>
+<li>Can a replay duplicate the transaction?</li>
+</ul>
+<p>This same reasoning reappears in Lecture 3-P1’s validation, velocity, transaction, and visibility controls.</p>
+<h3 id="lecture--how-it-links-to-the-labs-1" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-1" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a> converts each relevant OWASP risk into a requirement.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a> addresses supply-chain and known-component risk.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08</a> detects selected code patterns before execution.</li>
+<li><a href="index.html#cheat--x09---sonarqube">X09</a> aggregates code-quality and security findings.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a</a> tests the running application for common web weaknesses.</li>
+<li><a href="index.html#cheat--x11b---fuzzing-with-burp-suite">X11b</a> explores input and authentication behavior.</li>
+</ul>
+<p>Source basis: Lecture 1-P2, Secure Software Concepts x01, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-2-p1---vulnerability-tracking-and-assurance-maturity" tabindex="-1">Lecture 2-P1 - Vulnerability tracking and assurance maturity<a class="heading-anchor" href="#lecture--lecture-2-p1---vulnerability-tracking-and-assurance-maturity" aria-label="Link to Lecture 2-P1 - Vulnerability tracking and assurance maturity">#</a></h2><h3 id="lecture--vulnerability-knowledge-sources" tabindex="-1">Vulnerability knowledge sources<a class="heading-anchor" href="#lecture--vulnerability-knowledge-sources" aria-label="Link to Vulnerability knowledge sources">#</a></h3><table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>What it provides</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CVE</td>
+<td>Identifier and public record for a disclosed vulnerability</td>
+<td>Referencing the same vulnerability consistently</td>
+</tr>
+<tr>
+<td>NVD</td>
+<td>Enrichment such as severity, affected products, CPEs, references, and mitigation/fix information</td>
+<td>Triage and version impact research</td>
+</tr>
+<tr>
+<td>CVSS</td>
+<td>Standardized severity characteristics and score</td>
+<td>One input into prioritization, not the entire risk decision</td>
+</tr>
+<tr>
+<td>CAPEC</td>
+<td>Catalog of attack patterns and mitigations</td>
+<td>Understanding how attackers exploit classes of weaknesses</td>
+</tr>
+<tr>
+<td>MITRE ATT&amp;CK</td>
+<td>Real-world adversary tactics and techniques</td>
+<td>Operational threat scenarios, detection, and defense coverage</td>
+</tr>
+<tr>
+<td>CWE</td>
+<td>Weakness classes in software/hardware</td>
+<td>Root-cause classification and prevention guidance</td>
+</tr>
+</tbody></table>
+<p>Do not confuse a <strong>CVE</strong> (a particular disclosed vulnerability) with a <strong>CWE</strong> (a type of weakness) or <strong>CAPEC</strong> (an attack pattern).</p>
+<h3 id="lecture--cvss-versus-project-risk" tabindex="-1">CVSS versus project risk<a class="heading-anchor" href="#lecture--cvss-versus-project-risk" aria-label="Link to CVSS versus project risk">#</a></h3><p>CVSS estimates technical severity. Your prioritization must add context:</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Project priority = severity + reachability + exposure + asset value
+                 + existing controls + active exploitation + business impact</code></pre></div><p>A high score in an unused test-only dependency may be less urgent than a medium issue on an Internet-facing authentication path. Document the reasoning rather than silently ignoring either.</p>
+<h3 id="lecture--assurance-maturity-models" tabindex="-1">Assurance maturity models<a class="heading-anchor" href="#lecture--assurance-maturity-models" aria-label="Link to Assurance maturity models">#</a></h3><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Purpose</th>
+<th>Mental model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BSIMM</td>
+<td>Observes software security activities used by real organizations</td>
+<td>Compare the organization with observed practices and build an initiative</td>
+</tr>
+<tr>
+<td>OWASP SAMM</td>
+<td>Open framework for assessing and improving software assurance</td>
+<td>Score practices, find gaps, choose a risk-based improvement roadmap</td>
+</tr>
+<tr>
+<td>Microsoft SDL</td>
+<td>Integrates security/privacy work across development phases</td>
+<td>Apply defined security activities and gates throughout delivery</td>
+</tr>
+</tbody></table>
+<p>BSIMM organizes practices into domains including governance, intelligence, development touchpoints, and deployment. SAMM expresses increasing maturity from an unfulfilled starting point through repeatable and scaled practice.</p>
+<h3 id="lecture--maturity-lesson" tabindex="-1">Maturity lesson<a class="heading-anchor" href="#lecture--maturity-lesson" aria-label="Link to Maturity lesson">#</a></h3><p>Buying a scanner is not a mature security program. Maturity requires:</p>
+<ul>
+<li>ownership and governance;</li>
+<li>repeatable requirements and design review;</li>
+<li>trained developers and security champions;</li>
+<li>integrated tools with triage and remediation;</li>
+<li>measurement and feedback;</li>
+<li>deployment, monitoring, and incident response.</li>
+</ul>
+<h3 id="lecture--how-it-links-to-the-labs-2" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-2" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a> connects dependency evidence to CVE/NVD data.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08</a> and <a href="index.html#cheat--x09---sonarqube">X09</a> operationalize repeatable assurance activities.</li>
+<li><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a> makes assurance repeatable in CI.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a</a> produces findings that must be classified, prioritized, fixed, and retested.</li>
+<li>The cross-lab pipeline represents a small project-level version of an SDL/SAMM improvement program.</li>
+</ul>
+<p>Source basis: Lecture 2-P1, Secure Software Concepts x02, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-2-p2---secure-software-requirements-i" tabindex="-1">Lecture 2-P2 - Secure software requirements I<a class="heading-anchor" href="#lecture--lecture-2-p2---secure-software-requirements-i" aria-label="Link to Lecture 2-P2 - Secure software requirements I">#</a></h2><h3 id="lecture--requirement-types" tabindex="-1">Requirement types<a class="heading-anchor" href="#lecture--requirement-types" aria-label="Link to Requirement types">#</a></h3><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Question answered</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Functional requirement</td>
+<td>What must the system do?</td>
+<td>The LMS shall allow an instructor to upload a document.</td>
+</tr>
+<tr>
+<td>Non-functional requirement</td>
+<td>What measurable property/constraint must it have?</td>
+<td>A login response shall complete within a defined threshold under a stated load.</td>
+</tr>
+<tr>
+<td>Secure functional requirement</td>
+<td>How must an ordinary function behave securely, including prohibited behavior?</td>
+<td>An instructor may replace only documents belonging to modules they administer.</td>
+</tr>
+<tr>
+<td>Functional security requirement</td>
+<td>Which security service must exist?</td>
+<td>The system shall authenticate administrators with MFA.</td>
+</tr>
+<tr>
+<td>Non-functional security requirement</td>
+<td>Which security quality/architecture constraint applies?</td>
+<td>Sensitive traffic shall use the approved TLS configuration.</td>
+</tr>
+<tr>
+<td>Secure development requirement</td>
+<td>Which development activity must occur?</td>
+<td>Every pull request shall pass dependency and static analysis before merge.</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--the-requirements-process" tabindex="-1">The requirements process<a class="heading-anchor" href="#lecture--the-requirements-process" aria-label="Link to The requirements process">#</a></h3><ol>
+<li><strong>Feasibility study</strong> - identify stakeholders, assets, threats, attacker model, policies, standards, and regulations.</li>
+<li><strong>Secure requirement gathering</strong> - elicit CIA and AAA needs for features, data, and operations.</li>
+<li><strong>Specification</strong> - write unambiguous, measurable statements with acceptance criteria.</li>
+<li><strong>Validation</strong> - review necessity, consistency, feasibility, traceability, and testability with stakeholders.</li>
+</ol>
+<h3 id="lecture--cia--aaa" tabindex="-1">CIA + AAA<a class="heading-anchor" href="#lecture--cia--aaa" aria-label="Link to CIA + AAA">#</a></h3><table>
+<thead>
+<tr>
+<th>Objective</th>
+<th>Ask</th>
+<th>Example requirement evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Confidentiality</td>
+<td>Who may see which data, in which state?</td>
+<td>Access-control test, encryption configuration, masking review</td>
+</tr>
+<tr>
+<td>Integrity</td>
+<td>Who may change it, and how is unauthorized change detected/prevented?</td>
+<td>Validation test, authorization test, signature/hash verification</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>Which functions must remain available and recover how quickly?</td>
+<td>Load/failover test, recovery exercise, SLA measurements</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>How is an identity established and recovered?</td>
+<td>MFA/login/recovery tests and session evidence</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>What action may each identity perform on each resource?</td>
+<td>Role/ownership matrix and negative tests</td>
+</tr>
+<tr>
+<td>Accountability</td>
+<td>Which actions must be attributable and retained?</td>
+<td>Protected audit events and alert verification</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--data-confidentiality-states" tabindex="-1">Data confidentiality states<a class="heading-anchor" href="#lecture--data-confidentiality-states" aria-label="Link to Data confidentiality states">#</a></h3><p>Classify and protect data:</p>
+<ul>
+<li><strong>at rest</strong> - database, file, device storage, archives, backups;</li>
+<li><strong>in transit</strong> - browser/API/service/network communication;</li>
+<li><strong>in use</strong> - process memory, screen output, reports, logs, temporary files.</li>
+</ul>
+<p>Side channels also matter. A timing difference, response length, status code, or error message may reveal information without directly returning the protected value.</p>
+<h3 id="lecture--availability-terms" tabindex="-1">Availability terms<a class="heading-anchor" href="#lecture--availability-terms" aria-label="Link to Availability terms">#</a></h3><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SLA</td>
+<td>Agreed measurable service commitment</td>
+</tr>
+<tr>
+<td>MTD</td>
+<td>Maximum tolerable downtime before impact becomes unacceptable</td>
+</tr>
+<tr>
+<td>RTO</td>
+<td>Target time to restore service after disruption</td>
+</tr>
+<tr>
+<td>RPO</td>
+<td>Maximum acceptable data-loss window measured backward from disruption</td>
+</tr>
+</tbody></table>
+<p>“Five nines” availability is not a useful requirement unless scope, measurement interval, exclusions, dependencies, and recovery behavior are defined.</p>
+<h3 id="lecture--authentication-requirement-reminders" tabindex="-1">Authentication requirement reminders<a class="heading-anchor" href="#lecture--authentication-requirement-reminders" aria-label="Link to Authentication requirement reminders">#</a></h3><ul>
+<li>Define user types, service identities, administrators, and recovery operators.</li>
+<li>Prefer long passwords/passphrases and screening against breached/common passwords over arbitrary composition rituals.</li>
+<li>Specify rate/velocity protection and secure recovery.</li>
+<li>Define MFA for sensitive roles/actions.</li>
+<li>Define maximum accepted length to prevent truncation or resource abuse while permitting password-manager-generated values.</li>
+<li>Never store recoverable plaintext passwords.</li>
+</ul>
+<h3 id="lecture--how-it-links-to-lab-2" tabindex="-1">How it links to Lab 2<a class="heading-anchor" href="#lecture--how-it-links-to-lab-2" aria-label="Link to How it links to Lab 2">#</a></h3><p><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a> is the direct practical application:</p>
+<ol>
+<li>Select 2-3 major functional and non-functional requirements.</li>
+<li>Identify CIA/AAA assets and risks.</li>
+<li>Write testable security requirements.</li>
+<li>Use SecurityRAT to review applicable requirement families.</li>
+<li>Persist follow-up work as owned tickets.</li>
+</ol>
+<p>Use the <a href="index.html#snippets--lab-2---securityrat-and-requirement-templates">requirement record and traceability templates</a>.</p>
+<p>Source basis: Lecture 2-P2, Secure Software Requirements x01, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-3-p1---secure-software-requirements-ii" tabindex="-1">Lecture 3-P1 - Secure software requirements II<a class="heading-anchor" href="#lecture--lecture-3-p1---secure-software-requirements-ii" aria-label="Link to Lecture 3-P1 - Secure software requirements II">#</a></h2><h3 id="lecture--authorization" tabindex="-1">Authorization<a class="heading-anchor" href="#lecture--authorization" aria-label="Link to Authorization">#</a></h3><p>Authentication answers “who are you?” Authorization answers “may this principal perform this action on this resource now?”</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Decision basis</th>
+<th>Caution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User-based access control</td>
+<td>Individual identity</td>
+<td>Becomes difficult to manage at scale</td>
+</tr>
+<tr>
+<td>Role-based access control</td>
+<td>Assigned role(s)</td>
+<td>Roles can become overbroad; ownership checks may still be needed</td>
+</tr>
+<tr>
+<td>Attribute-based/contextual control</td>
+<td>Identity, resource, action, environment attributes</td>
+<td>More expressive but easier to misconfigure</td>
+</tr>
+</tbody></table>
+<p>Authorization must be enforced server-side at every protected action. A hidden button is not access control.</p>
+<h3 id="lecture--accountability-and-audit-design-requirements" tabindex="-1">Accountability and audit design requirements<a class="heading-anchor" href="#lecture--accountability-and-audit-design-requirements" aria-label="Link to Accountability and audit design requirements">#</a></h3><p>Specify:</p>
+<ul>
+<li>what events are recorded;</li>
+<li>actor/service identity;</li>
+<li>action, target, result, time, and correlation identifier;</li>
+<li>protected storage and access;</li>
+<li>monitoring and alerting;</li>
+<li>retention, rotation, archive, and disposal;</li>
+<li>time synchronization;</li>
+<li>prohibited data such as passwords, secret tokens, or unnecessary personal data.</li>
+</ul>
+<p>Logging is a <strong>detective control</strong>. It becomes useful only when protected, monitored, and connected to a response process.</p>
+<h3 id="lecture--general-application-security-requirements" tabindex="-1">General application security requirements<a class="heading-anchor" href="#lecture--general-application-security-requirements" aria-label="Link to General application security requirements">#</a></h3><p><strong>Session management</strong></p>
+<ul>
+<li>unpredictable and unique session identifiers;</li>
+<li>expiration, idle timeout, and maximum lifetime;</li>
+<li>renewal after authentication/privilege change;</li>
+<li>logout and server-side invalidation;</li>
+<li>concurrent-session policy;</li>
+<li>protection against reuse, theft, and fixation.</li>
+</ul>
+<p><strong>Error management</strong></p>
+<ul>
+<li>safe user-facing message;</li>
+<li>no stack trace, secret, query, filesystem path, or internal architecture disclosure;</li>
+<li>detailed internal record tied to a correlation ID;</li>
+<li>fail closed for security decisions;</li>
+<li>rollback/release resources during partial failure.</li>
+</ul>
+<p><strong>Configuration management</strong></p>
+<ul>
+<li>no production secret in source, images, or committed configuration;</li>
+<li>environment-specific, least-privilege values;</li>
+<li>protected initialization, rotation, and disposal;</li>
+<li>secure defaults and reviewed changes.</li>
+</ul>
+<p><strong>Code management</strong></p>
+<ul>
+<li>authenticated source control;</li>
+<li>protected branches and review;</li>
+<li>secret scanning and dependency analysis;</li>
+<li>reproducible controlled deployment;</li>
+<li>no hard-coded credentials.</li>
+</ul>
+<h3 id="lecture--operational-requirements" tabindex="-1">Operational requirements<a class="heading-anchor" href="#lecture--operational-requirements" aria-label="Link to Operational requirements">#</a></h3><ul>
+<li>deployment environment and user population;</li>
+<li>development/test/production separation;</li>
+<li>archive location, format, encryption, retrieval, retention, and deletion;</li>
+<li>business continuity and recovery;</li>
+<li>third-party/procurement requirements;</li>
+<li>applicable regulations such as PDPA/GDPR;</li>
+<li>anti-tampering/signing/licensing when relevant to COTS software.</li>
+</ul>
+<h3 id="lecture--anti-requirements-and-misuse-cases" tabindex="-1">Anti-requirements and misuse cases<a class="heading-anchor" href="#lecture--anti-requirements-and-misuse-cases" aria-label="Link to Anti-requirements and misuse cases">#</a></h3><p>An anti-requirement states an unacceptable behavior:</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Ordinary requirement: The system shall create an identifier when given valid inputs.
+Anti-requirement: The system shall not create duplicate, expired, or unauthorized identifiers.</code></pre></div><p>A misuse case extends an ordinary use case with:</p>
+<ul>
+<li>a mis-actor;</li>
+<li>the attacker’s goal/action;</li>
+<li>the threatened legitimate use case;</li>
+<li>a mitigating security use case;</li>
+<li>the resulting testable requirement.</li>
+</ul>
+<p>For a login flow, misuse cases may include credential capture, brute force, recovery abuse, session fixation, and user enumeration.</p>
+<h3 id="lecture--atm-analysis-mnemonic-ivtv" tabindex="-1">ATM analysis mnemonic: IVTV<a class="heading-anchor" href="#lecture--atm-analysis-mnemonic-ivtv" aria-label="Link to ATM analysis mnemonic: IVTV">#</a></h3><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Questions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Input validation</td>
+<td>Length, range/boundary, characters/encoding, syntax, and business semantics?</td>
+</tr>
+<tr>
+<td>Velocity</td>
+<td>How many attempts, transactions, bytes, or changes are permitted per actor/time/resource?</td>
+</tr>
+<tr>
+<td>Transactions</td>
+<td>What happens on interruption, replay, concurrency, rollback, and partial completion?</td>
+</tr>
+<tr>
+<td>Visibility</td>
+<td>What sensitive value remains on screen, in a receipt, response, log, cache, or side channel?</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--framework-links" tabindex="-1">Framework links<a class="heading-anchor" href="#lecture--framework-links" aria-label="Link to Framework links">#</a></h3><ul>
+<li><strong>PCI Software Security Framework</strong>: payment software requirements and evidence-based assessment.</li>
+<li><strong>NIST SSDF</strong>: high-level secure development practices, including security requirements, risk-informed design, threat modeling, training, and rigorous review of high-risk areas.</li>
+</ul>
+<h3 id="lecture--how-it-links-to-the-labs-3" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-3" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a>: record authorization, audit, session, error, configuration, and operational requirements.</li>
+<li><a href="index.html#cheat--x03---microsoft-threat-modeling-tool">X03/X04</a>: translate misuse cases into threats on architecture elements and flows.</li>
+<li><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a>: automate negative, boundary, concurrency, and failure tests.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08</a>: detect selected error-handling, injection, and unsafe coding patterns.</li>
+<li><a href="index.html#cheat--x11b---fuzzing-with-burp-suite">X11b</a>: exercise input and velocity behavior in an authorized target.</li>
+</ul>
+<p>Source basis: Lecture 3-P1, Secure Software Requirements x02, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-3-p2---threat-modeling" tabindex="-1">Lecture 3-P2 - Threat modeling<a class="heading-anchor" href="#lecture--lecture-3-p2---threat-modeling" aria-label="Link to Lecture 3-P2 - Threat modeling">#</a></h2><h3 id="lecture--threat-versus-risk" tabindex="-1">Threat versus risk<a class="heading-anchor" href="#lecture--threat-versus-risk" aria-label="Link to Threat versus risk">#</a></h3><ul>
+<li>A <strong>threat</strong> is a potential cause or scenario of harm.</li>
+<li>A <strong>vulnerability</strong> is the weakness that permits it.</li>
+<li><strong>Risk</strong> considers the scenario in context, including likelihood and impact.</li>
+<li>A <strong>control/mitigation</strong> reduces likelihood, impact, or both.</li>
+<li><strong>Residual risk</strong> remains after controls and must be accepted, reduced further, transferred, or avoided.</li>
+</ul>
+<h3 id="lecture--threat-agents" tabindex="-1">Threat agents<a class="heading-anchor" href="#lecture--threat-agents" aria-label="Link to Threat agents">#</a></h3><p>Human threat agents may include:</p>
+<ul>
+<li>ignorant or error-prone users;</li>
+<li>accidental discoverers and curious users;</li>
+<li>script users;</li>
+<li>insiders and rogue administrators;</li>
+<li>organized cybercriminals;</li>
+<li>third parties/suppliers;</li>
+<li>nation-state or military actors.</li>
+</ul>
+<p>Non-human threats include operating-system failure, malware/ransomware, network failure/attack, automation, and AI-enabled threats.</p>
+<p>An attacker model must state capability, access, location, privilege, knowledge, motivation, and constraints.</p>
+<h3 id="lecture--what-to-identify-before-stride" tabindex="-1">What to identify before STRIDE<a class="heading-anchor" href="#lecture--what-to-identify-before-stride" aria-label="Link to What to identify before STRIDE">#</a></h3><ol>
+<li>Assets and security objectives</li>
+<li>Physical and logical topology</li>
+<li>External entities and human/non-human actors</li>
+<li>Processes and privileged functionality</li>
+<li>Data stores and classified data elements</li>
+<li>Entry and exit points</li>
+<li>Directional, labelled data flows</li>
+<li>Trust boundaries where control or privilege changes</li>
+<li>External dependencies and assumptions</li>
+</ol>
+<h3 id="lecture--data-flow-diagram-elements" tabindex="-1">Data Flow Diagram elements<a class="heading-anchor" href="#lecture--data-flow-diagram-elements" aria-label="Link to Data Flow Diagram elements">#</a></h3><table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Meaning</th>
+<th>Threat-model question</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>External entity</td>
+<td>User or external system</td>
+<td>How is it identified and constrained?</td>
+</tr>
+<tr>
+<td>Process</td>
+<td>Transforms data/performs work</td>
+<td>Which privilege and validation does it use?</td>
+</tr>
+<tr>
+<td>Data store</td>
+<td>Persists data</td>
+<td>Who can read/change/delete it, and how is it protected?</td>
+</tr>
+<tr>
+<td>Data flow</td>
+<td>Moves specific data</td>
+<td>Which protocol, identity, direction, validation, and protection?</td>
+</tr>
+<tr>
+<td>Trust boundary</td>
+<td>Trust/privilege/ownership changes</td>
+<td>Which checks occur when the flow crosses it?</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--different-attacker-positions-change-controls" tabindex="-1">Different attacker positions change controls<a class="heading-anchor" href="#lecture--different-attacker-positions-change-controls" aria-label="Link to Different attacker positions change controls">#</a></h3><ul>
+<li><strong>Web attacker</strong>: can send parallel/malformed requests and observe responses.</li>
+<li><strong>Network attacker</strong>: can read, intercept, replay, delay, or modify unprotected traffic.</li>
+<li><strong>Co-located attacker</strong>: may access local files, memory, keyboard, or display.</li>
+</ul>
+<p>Do not assume away a realistic attacker merely because the resulting controls are inconvenient.</p>
+<h3 id="lecture--threat-modeling-process" tabindex="-1">Threat-modeling process<a class="heading-anchor" href="#lecture--threat-modeling-process" aria-label="Link to Threat-modeling process">#</a></h3><ol>
+<li>Define security requirements and scope.</li>
+<li>Create the application/architecture diagram.</li>
+<li>Identify and prioritize applicable threats.</li>
+<li>Select and implement controls.</li>
+<li>Document assumptions, status, ownership, and residual risk.</li>
+<li>Validate that the model is accurate and mitigations work.</li>
+<li>Revisit the model when the system or threat landscape changes.</li>
+</ol>
+<h3 id="lecture--attack-trees" tabindex="-1">Attack trees<a class="heading-anchor" href="#lecture--attack-trees" aria-label="Link to Attack trees">#</a></h3><p>An attack tree begins with the attacker’s goal at the root. Branches describe alternative or combined sub-goals; leaves are concrete ways to achieve them. Use trees to discover paths, prerequisites, shared controls, and where one mitigation blocks multiple branches.</p>
+<h3 id="lecture--stride-memory-table" tabindex="-1">STRIDE memory table<a class="heading-anchor" href="#lecture--stride-memory-table" aria-label="Link to STRIDE memory table">#</a></h3><table>
+<thead>
+<tr>
+<th>STRIDE</th>
+<th>Attacker goal</th>
+<th>Violated property</th>
+<th>Typical controls</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spoofing</td>
+<td>Pretend to be another identity</td>
+<td>Authentication</td>
+<td>MFA, certificates, secure sessions, service identity</td>
+</tr>
+<tr>
+<td>Tampering</td>
+<td>Change data/code/configuration</td>
+<td>Integrity</td>
+<td>Authorization, validation, signatures/MACs, protected deployment</td>
+</tr>
+<tr>
+<td>Repudiation</td>
+<td>Deny an action</td>
+<td>Accountability/non-repudiation</td>
+<td>Protected audit records, identity, timestamps, correlation</td>
+</tr>
+<tr>
+<td>Information disclosure</td>
+<td>Read protected information</td>
+<td>Confidentiality</td>
+<td>Encryption, masking, access control, minimization, safe errors</td>
+</tr>
+<tr>
+<td>Denial of service</td>
+<td>Prevent legitimate use</td>
+<td>Availability</td>
+<td>Limits, quotas, timeouts, redundancy, isolation, graceful degradation</td>
+</tr>
+<tr>
+<td>Elevation of privilege</td>
+<td>Gain unauthorized capability</td>
+<td>Authorization</td>
+<td>Least privilege, deny by default, isolation, server-side checks</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--how-it-links-to-x03-and-x04" tabindex="-1">How it links to X03 and X04<a class="heading-anchor" href="#lecture--how-it-links-to-x03-and-x04" aria-label="Link to How it links to X03 and X04">#</a></h3><ul>
+<li><a href="index.html#cheat--x03---microsoft-threat-modeling-tool">X03 Microsoft Threat Modeling Tool</a> generates STRIDE candidates from a DFD and tracks threat status/mitigation.</li>
+<li><a href="index.html#cheat--x04---owasp-threat-dragon">X04 OWASP Threat Dragon</a> provides a cross-platform diagram, rule engine, open-threat highlighting, and reporting.</li>
+<li>Use the <a href="index.html#snippets--x03-and-x04---threat-model-records">threat-model records</a> to capture evidence beyond the diagram.</li>
+</ul>
+<p>Source basis: Lecture 3-P2, Threat Modeling, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-4---secure-software-design-i" tabindex="-1">Lecture 4 - Secure software design I<a class="heading-anchor" href="#lecture--lecture-4---secure-software-design-i" aria-label="Link to Lecture 4 - Secure software design I">#</a></h2><h3 id="lecture--general-design-progression" tabindex="-1">General design progression<a class="heading-anchor" href="#lecture--general-design-progression" aria-label="Link to General design progression">#</a></h3><div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Architecture -&gt; Detailed design -&gt; Construction design</code></pre></div><ul>
+<li>Architecture defines views, patterns, components, topology, and major flows.</li>
+<li>Interface design defines the contract between components.</li>
+<li>Component design defines internal structure and behavior, often with class and sequence diagrams.</li>
+</ul>
+<p>Security must be represented in all three. A design may be functionally correct yet insecure.</p>
+<h3 id="lecture--flaw-versus-bug" tabindex="-1">Flaw versus bug<a class="heading-anchor" href="#lecture--flaw-versus-bug" aria-label="Link to Flaw versus bug">#</a></h3><ul>
+<li><strong>Flaw</strong>: the intended design itself lacks or misplaces a control.</li>
+<li><strong>Bug</strong>: the implementation fails to realize an otherwise sound design.</li>
+</ul>
+<p>Scanners often find bugs more readily than flaws. Threat modeling, misuse cases, architecture review, and design principles are essential for flaws.</p>
+<h3 id="lecture--ten-owasp-secure-design-principles" tabindex="-1">Ten OWASP secure design principles<a class="heading-anchor" href="#lecture--ten-owasp-secure-design-principles" aria-label="Link to Ten OWASP secure design principles">#</a></h3><table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Meaning</th>
+<th>Quick review question</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Minimize attack surface</td>
+<td>Remove/restrict unnecessary features, interfaces, privileges, and exposure</td>
+<td>Can this endpoint, port, parser, role, or feature be removed or narrowed?</td>
+</tr>
+<tr>
+<td>Establish secure defaults</td>
+<td>Initial behavior protects users without extra configuration</td>
+<td>Is access denied, TLS enabled, and exposure minimized by default?</td>
+</tr>
+<tr>
+<td>Least privilege</td>
+<td>Grant only the capability needed, for only as long as needed</td>
+<td>Does this user/service/database role need every granted permission?</td>
+</tr>
+<tr>
+<td>Defense in depth</td>
+<td>Use independent layers that fail differently</td>
+<td>If the first control fails, what still prevents/detects the attack?</td>
+</tr>
+<tr>
+<td>Fail securely</td>
+<td>Exceptions do not grant access or leave unsafe partial state</td>
+<td>Does every error path deny/rollback/release safely?</td>
+</tr>
+<tr>
+<td>Do not trust services</td>
+<td>Validate third-party input/output and plan for compromise/failure</td>
+<td>What if the dependency is malicious, wrong, slow, or unavailable?</td>
+</tr>
+<tr>
+<td>Separation of duties</td>
+<td>Split conflicting powers to reduce fraud/abuse</td>
+<td>Can one actor request, approve, execute, and conceal the same action?</td>
+</tr>
+<tr>
+<td>Avoid security by obscurity</td>
+<td>Do not depend on secrecy of design/source as the main control</td>
+<td>Would the system remain secure if its architecture were known?</td>
+</tr>
+<tr>
+<td>Keep security simple</td>
+<td>Reduce unnecessary complexity and ambiguous logic</td>
+<td>Can the control be smaller, centralized, explicit, and easier to verify?</td>
+</tr>
+<tr>
+<td>Fix correctly</td>
+<td>Address root cause, variants, tests, and regressions</td>
+<td>Where else does the same pattern exist, and which test prevents recurrence?</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--fail-secure-example" tabindex="-1">Fail-secure example<a class="heading-anchor" href="#lecture--fail-secure-example" aria-label="Link to Fail-secure example">#</a></h3><p>Unsafe structure:</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">isAdmin = true
+try to check role
+if check throws, isAdmin remains true</code></pre></div><p>Secure structure:</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">isAdmin = false
+try to check role
+only set true after explicit successful verification
+on exception: deny, log safely, and return a controlled error</code></pre></div><h3 id="lecture--attack-surface-mapping" tabindex="-1">Attack surface mapping<a class="heading-anchor" href="#lecture--attack-surface-mapping" aria-label="Link to Attack surface mapping">#</a></h3><p>Inventory entry/exit points:</p>
+<ul>
+<li>forms, fields, headers, cookies, and APIs;</li>
+<li>files, databases, caches, and local storage;</li>
+<li>emails, messages, queues, and webhooks;</li>
+<li>runtime arguments and environment/configuration;</li>
+<li>login/recovery and administration;</li>
+<li>CRUD and business workflows;</li>
+<li>transactions and external integrations;</li>
+<li>operational and monitoring interfaces.</li>
+</ul>
+<p>Group thousands of individual points into meaningful types, then review authentication, authorization, validation, data, exposure, and monitoring consistently.</p>
+<h3 id="lecture--security-architecture" tabindex="-1">Security architecture<a class="heading-anchor" href="#lecture--security-architecture" aria-label="Link to Security architecture">#</a></h3><ul>
+<li><strong>Physical architecture</strong>: hosts, networks, zones, deployment locations, and physical components.</li>
+<li><strong>Logical architecture</strong>: services, software components, protocols, identities, data, and interactions.</li>
+</ul>
+<p>Security architecture is a deliberate set of controls, safer processes, and secure defaults. It is not a collection of security products without a threat/control rationale.</p>
+<h3 id="lecture--how-it-links-to-the-labs-4" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-4" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-1---docker-and-docker-compose">Lab 1</a>: networks, published ports, service identities, volumes, and separation are architecture decisions.</li>
+<li><a href="index.html#cheat--x03---microsoft-threat-modeling-tool">X03/X04</a>: use DFDs and STRIDE to expose design flaws.</li>
+<li><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a>: Nginx adds a controlled edge layer; CI creates repeatable gates.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a>: “do not trust services” includes third-party components and supply chains.</li>
+<li><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a>: “fix correctly” requires a regression test.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08/X09</a>: analysis validates selected implementation consequences but cannot prove the design is secure.</li>
+</ul>
+<p>Source basis: Lecture 4, Secure Software Design x01, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-5---secure-software-design-ii" tabindex="-1">Lecture 5 - Secure software design II<a class="heading-anchor" href="#lecture--lecture-5---secure-software-design-ii" aria-label="Link to Lecture 5 - Secure software design II">#</a></h2><h3 id="lecture--cia-and-aaa-become-architecture" tabindex="-1">CIA and AAA become architecture<a class="heading-anchor" href="#lecture--cia-and-aaa-become-architecture" aria-label="Link to CIA and AAA become architecture">#</a></h3><table>
+<thead>
+<tr>
+<th>Objective</th>
+<th>Design techniques</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Confidentiality</td>
+<td>Data classification, minimization, masking, TLS, encryption at rest, protected keys/secrets</td>
+</tr>
+<tr>
+<td>Integrity</td>
+<td>Validation, hashes/MACs/signatures, referential integrity, authorization, transactions, resource locking</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>Replication, failover, horizontal/vertical scaling, limits, timeouts, recovery, dependency isolation</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>Knowledge/possession/inherence factors, MFA, SSO, secure enrollment and recovery</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>RBAC/UBAC/context, least privilege, separation of duties, ownership and action checks</td>
+</tr>
+<tr>
+<td>Accountability</td>
+<td>Audit fields, protected collection/storage, correlation, monitoring, retention, no plaintext secrets</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--symmetric-versus-asymmetric-cryptography" tabindex="-1">Symmetric versus asymmetric cryptography<a class="heading-anchor" href="#lecture--symmetric-versus-asymmetric-cryptography" aria-label="Link to Symmetric versus asymmetric cryptography">#</a></h3><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Symmetric</th>
+<th>Asymmetric</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Keys</td>
+<td>Same secret for encryption/decryption</td>
+<td>Public/private key pair</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Fast; suited to bulk data</td>
+<td>Slower; suited to identity, key exchange, signatures</td>
+</tr>
+<tr>
+<td>Key distribution</td>
+<td>Shared secret must be exchanged/protected</td>
+<td>Public key can be distributed; private key remains secret</td>
+</tr>
+<tr>
+<td>Non-repudiation/signatures</td>
+<td>Not provided by shared-key encryption alone</td>
+<td>Digital signatures can provide origin/integrity evidence</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>AES</td>
+<td>RSA/ECC families depending approved use</td>
+</tr>
+</tbody></table>
+<p>Real protocols commonly combine both: asymmetric mechanisms establish identity/key agreement; symmetric authenticated encryption protects the session efficiently.</p>
+<h3 id="lecture--certificates" tabindex="-1">Certificates<a class="heading-anchor" href="#lecture--certificates" aria-label="Link to Certificates">#</a></h3><p>An X.509 certificate binds a public key to an identity through a certification chain. A secure client verifies:</p>
+<ul>
+<li>trusted issuer/chain;</li>
+<li>hostname/identity;</li>
+<li>validity period;</li>
+<li>allowed usage and algorithm;</li>
+<li>revocation/status according to the system design.</li>
+</ul>
+<p>TLS protects data in transit only when certificate validation and protocol configuration are correct. It does not replace application authorization or secure storage.</p>
+<h3 id="lecture--hashing-salts-and-password-storage" tabindex="-1">Hashing, salts, and password storage<a class="heading-anchor" href="#lecture--hashing-salts-and-password-storage" aria-label="Link to Hashing, salts, and password storage">#</a></h3><p>A cryptographic hash maps variable input to a fixed-size digest and supports integrity use cases. A salt should be random and unique per password record to defeat precomputed tables and identical-hash comparison.</p>
+<blockquote>
+<p>For password storage, do not use plain MD5, SHA-1, or fast unsalted SHA-256. Use an approved, deliberately slow password-hashing function through a maintained library, with per-password salt and appropriate work parameters. A salt is not secret; a pepper, if used, is a separate protected secret.</p>
+</blockquote>
+<p>Password records may also need metadata such as algorithm/version, work factor, account state, failed-attempt counters, password-change time, and session/recovery state. Do not log the password or resulting verifier.</p>
+<h3 id="lecture--referential-integrity" tabindex="-1">Referential integrity<a class="heading-anchor" href="#lecture--referential-integrity" aria-label="Link to Referential integrity">#</a></h3><p>Foreign-key and lifecycle rules keep references valid. Design deletion explicitly:</p>
+<ul>
+<li>restrict deletion while dependents exist;</li>
+<li>cascade only when the business/security meaning is safe;</li>
+<li>soft-delete with retention/access rules when required;</li>
+<li>archive/anonymize according to policy;</li>
+<li>audit high-impact changes.</li>
+</ul>
+<h3 id="lecture--resource-locking-and-transactions" tabindex="-1">Resource locking and transactions<a class="heading-anchor" href="#lecture--resource-locking-and-transactions" aria-label="Link to Resource locking and transactions">#</a></h3><p>Concurrency can violate integrity even when each individual request looks valid. Consider:</p>
+<ul>
+<li>atomic database transactions;</li>
+<li>row/version locking or optimistic concurrency;</li>
+<li>idempotency keys for retried actions;</li>
+<li>replay protection;</li>
+<li>consistent ordering of multi-step operations;</li>
+<li>rollback and compensation on partial failure.</li>
+</ul>
+<h3 id="lecture--availability-design" tabindex="-1">Availability design<a class="heading-anchor" href="#lecture--availability-design" aria-label="Link to Availability design">#</a></h3><ul>
+<li><strong>Replication</strong> creates redundant copies/services but introduces consistency and failover questions.</li>
+<li><strong>Failover</strong> switches from failed active capacity to standby capacity.</li>
+<li><strong>Vertical scaling</strong> adds resources to an existing node.</li>
+<li><strong>Horizontal scaling</strong> adds nodes and requires distribution/state design.</li>
+</ul>
+<p>Redundancy is not a backup, and a backup is not proven until restore is tested.</p>
+<h3 id="lecture--authentication-and-passwordless-design" tabindex="-1">Authentication and passwordless design<a class="heading-anchor" href="#lecture--authentication-and-passwordless-design" aria-label="Link to Authentication and passwordless design">#</a></h3><p>Authentication factors:</p>
+<ul>
+<li>something known;</li>
+<li>something possessed;</li>
+<li>something inherent.</li>
+</ul>
+<p>Passwordless systems still need secure enrollment, device binding, recovery, revocation, phishing resistance, session security, and audit. Removing a password does not remove authentication threats.</p>
+<h3 id="lecture--authorization-and-admin-design" tabindex="-1">Authorization and admin design<a class="heading-anchor" href="#lecture--authorization-and-admin-design" aria-label="Link to Authorization and admin design">#</a></h3><p>Avoid an unrestricted “super admin.” Separate operational administration from acting as a normal customer. Consider:</p>
+<ul>
+<li>who creates the initial administrator;</li>
+<li>MFA and step-up authentication;</li>
+<li>recovery without bypass/backdoor;</li>
+<li>dual approval for high-impact actions;</li>
+<li>just-in-time/time-limited privilege;</li>
+<li>complete audit and alerting;</li>
+<li>inability to read user secrets unnecessarily.</li>
+</ul>
+<h3 id="lecture--accountability-design" tabindex="-1">Accountability design<a class="heading-anchor" href="#lecture--accountability-design" aria-label="Link to Accountability design">#</a></h3><p>Useful audit records answer who, what, where, when, target, result, and correlation. They must balance forensic value with minimization:</p>
+<ul>
+<li>do not store passwords, secret tokens, full payment data, or unnecessary personal data;</li>
+<li>protect logs against unauthorized reading and tampering;</li>
+<li>centralize/monitor important events;</li>
+<li>rotate, retain, archive, and dispose according to policy.</li>
+</ul>
+<h3 id="lecture--four-part-secure-design-process" tabindex="-1">Four-part secure design process<a class="heading-anchor" href="#lecture--four-part-secure-design-process" aria-label="Link to Four-part secure design process">#</a></h3><ol>
+<li><strong>Architecture</strong> - physical/logical topologies, services, ports, protocols, identities, authentication/authorization, data, actors, audit.</li>
+<li><strong>Identify threats</strong> - boundaries, flows, entry/exit points, mis-actors, attack trees, STRIDE/OWASP/CWE lists.</li>
+<li><strong>Prioritize and implement controls</strong> - validation, safe errors, encryption/hashing, replication, access control, MFA, logging, and other contextual measures.</li>
+<li><strong>Document and validate</strong> - threat profile, residual risk, verification/validation report, and evidence.</li>
+</ol>
+<h3 id="lecture--data-access-control-matrix" tabindex="-1">Data access control matrix<a class="heading-anchor" href="#lecture--data-access-control-matrix" aria-label="Link to Data access control matrix">#</a></h3><p>Build a matrix before implementation:</p>
+<table>
+<thead>
+<tr>
+<th>Actor/service</th>
+<th>Data/resource</th>
+<th align="right">Create</th>
+<th align="right">Read</th>
+<th align="right">Update</th>
+<th align="right">Delete</th>
+<th>Special conditions/audit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer</td>
+<td>Own profile</td>
+<td align="right">-</td>
+<td align="right">Allow</td>
+<td align="right">Allow</td>
+<td align="right">Limited</td>
+<td>Re-authenticate sensitive changes</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Other profile</td>
+<td align="right">-</td>
+<td align="right">Deny</td>
+<td align="right">Deny</td>
+<td align="right">Deny</td>
+<td>Log repeated attempts</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Account status</td>
+<td align="right">-</td>
+<td align="right">Limited</td>
+<td align="right">Limited</td>
+<td align="right">Deny</td>
+<td>Ticket and audit required</td>
+</tr>
+<tr>
+<td>Administrator</td>
+<td>Security configuration</td>
+<td align="right">Allow</td>
+<td align="right">Allow</td>
+<td align="right">Allow</td>
+<td align="right">Restricted</td>
+<td>MFA, dual approval, full audit</td>
+</tr>
+<tr>
+<td>Application service</td>
+<td>Required tables</td>
+<td align="right">As needed</td>
+<td align="right">As needed</td>
+<td align="right">As needed</td>
+<td align="right">Usually restricted</td>
+<td>Dedicated DB role</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--how-it-links-to-the-labs-5" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-5" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-1---docker-and-docker-compose">Lab 1</a>: implement topology, service separation, networks, persistence, and least exposure.</li>
+<li><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a>: express CIA/AAA and lifecycle needs before choosing controls.</li>
+<li><a href="index.html#cheat--x03---microsoft-threat-modeling-tool">X03/X04</a>: document architecture and systematically identify threats.</li>
+<li><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a>: implement TLS termination, reverse-proxy boundaries, and CI gates.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a>: assess external component/dependency trust.</li>
+<li><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a>: verify authentication, authorization, concurrency, failure, and regression behavior.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08/X09</a>: inspect implementation against selected secure-design consequences.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a/X11b</a>: validate attacker-visible behavior on an authorized running target.</li>
+</ul>
+<p>Source basis: Lecture 5, Secure Software Design x02, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-55---introduction-to-the-second-half" tabindex="-1">Lecture 5.5 - Introduction to the second half<a class="heading-anchor" href="#lecture--lecture-55---introduction-to-the-second-half" aria-label="Link to Lecture 5.5 - Introduction to the second half">#</a></h2><h3 id="lecture--what-changes-after-secure-design" tabindex="-1">What changes after secure design<a class="heading-anchor" href="#lecture--what-changes-after-secure-design" aria-label="Link to What changes after secure design">#</a></h3><p>The second half moves from deciding <strong>what security should exist</strong> to proving <strong>what was implemented and verified</strong>:</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Secure design -&gt; Secure implementation -&gt; Static analysis
+              -&gt; Secure verification/DAST -&gt; Secure deployment
+              -&gt; Secure harness engineering</code></pre></div><p>The key lesson is evidence. A claim such as “we used HTTPS” is incomplete without the relevant configuration, filenames, code, test result, and explanation of why the control satisfies a requirement or mitigates a threat.</p>
+<h3 id="lecture--deliverable-2-evidence-map" tabindex="-1">Deliverable 2 evidence map<a class="heading-anchor" href="#lecture--deliverable-2-evidence-map" aria-label="Link to Deliverable 2 evidence map">#</a></h3><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Explain</th>
+<th>Retain as evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Design review</td>
+<td>Security refinements made after Deliverable 1 and why they improve the design</td>
+<td>Updated diagram, requirement/threat IDs, design decision and rationale</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>Actual pipeline, tools, stages, triggers, and security gates</td>
+<td>Workflow files and repeated successful run history from early implementation onward</td>
+</tr>
+<tr>
+<td>Repository organization</td>
+<td>How directories/files support later QA and source review</td>
+<td>Repository tree, README, class/component-to-file mapping, contribution history</td>
+</tr>
+<tr>
+<td>Deployment automation</td>
+<td>How repository changes reach the target environment</td>
+<td>Authorized deployment workflow, protected credentials, successful deployment evidence</td>
+</tr>
+<tr>
+<td>Login</td>
+<td>Server authentication, user authentication, TLS choices, key storage, password storage</td>
+<td>Sequence diagram, relevant code/configuration, safe test evidence</td>
+</tr>
+<tr>
+<td>Session management</td>
+<td>Token/cookie structure, generation, transport, integrity and attack prevention</td>
+<td>Cookie settings, rotation/invalidation logic, hijacking/replay tests</td>
+</tr>
+<tr>
+<td>Access control</td>
+<td>How each actor is restricted to permitted actions/resources</td>
+<td>Access matrix, server-side enforcement code, positive and negative tests</td>
+</tr>
+<tr>
+<td>Secure coding</td>
+<td>Which recommended practices were followed</td>
+<td>Filename-specific snippets, review checklist and analysis findings</td>
+</tr>
+<tr>
+<td>Test automation</td>
+<td>Dependency inventory, dependency checks, and automated tests</td>
+<td>Lockfile/SBOM, SCA results, test code, CI results</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--repository-freeze-and-qa-handoff" tabindex="-1">Repository freeze and QA handoff<a class="heading-anchor" href="#lecture--repository-freeze-and-qa-handoff" aria-label="Link to Repository freeze and QA handoff">#</a></h3><p>At the implementation submission point, the repository becomes the artifact reviewed by another QA/security team. Prepare it as though the reviewers cannot ask you to repair missing context:</p>
+<ul>
+<li>keep build and test instructions reproducible;</li>
+<li>remove real secrets and local-only generated data;</li>
+<li>identify the exact submitted commit;</li>
+<li>make diagrams and documentation match that commit;</li>
+<li>preserve CI, test and analysis evidence;</li>
+<li>make filenames and directory purpose understandable;</li>
+<li>record known limitations and residual risk honestly.</li>
+</ul>
+<blockquote>
+<p>Dates, page limits, practical-test arrangements and submission rules can change. Use the current LMS/lecturer announcement for administrative details; use this page for the technical content.</p>
+</blockquote>
+<h3 id="lecture--how-it-links-to-the-labs-6" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-6" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a> supplies TLS, reverse-proxy and CI/CD evidence.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a> supplies the dependency inventory and vulnerability analysis.</li>
+<li><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a> supplies automated unit/integration/UI evidence.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08/X09</a> provide source-analysis and quality-gate evidence.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a/X11b</a> reflect the later QA/security-team perspective.</li>
+</ul>
+<p>Source basis: Lecture 5.5, Second Half Intro, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-6---secure-implementation-i" tabindex="-1">Lecture 6 - Secure implementation I<a class="heading-anchor" href="#lecture--lecture-6---secure-implementation-i" aria-label="Link to Lecture 6 - Secure implementation I">#</a></h2><h3 id="lecture--devops-devsecops-and-small-changes" tabindex="-1">DevOps, DevSecOps, and small changes<a class="heading-anchor" href="#lecture--devops-devsecops-and-small-changes" aria-label="Link to DevOps, DevSecOps, and small changes">#</a></h3><p><strong>DevOps</strong> joins development and operations so software can be improved continuously through smaller, lower-risk changes. <strong>DevSecOps</strong> integrates security and compliance into that same delivery loop rather than placing them in a separate late review.</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Commit -&gt; Build -&gt; Test -&gt; Security checks -&gt; Delivery -&gt; Deployment -&gt; Monitor
+           ^                                                        |
+           +---------------- feedback and remediation --------------+</code></pre></div><p>Security-relevant pipeline properties include:</p>
+<ul>
+<li>version-controlled workflow definitions;</li>
+<li>least-privilege workflow permissions;</li>
+<li>protected branches and reviewed changes;</li>
+<li>pinned/trusted actions and dependencies;</li>
+<li>secrets supplied through protected stores, not source code;</li>
+<li>failure stops promotion;</li>
+<li>retained logs, reports and artifacts;</li>
+<li>reproducible build and test stages.</li>
+</ul>
+<h3 id="lecture--continuous-integration-delivery-and-deployment" tabindex="-1">Continuous integration, delivery, and deployment<a class="heading-anchor" href="#lecture--continuous-integration-delivery-and-deployment" aria-label="Link to Continuous integration, delivery, and deployment">#</a></h3><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Continuous integration</td>
+<td>Frequently merge small changes and automatically build/test them</td>
+</tr>
+<tr>
+<td>Continuous delivery</td>
+<td>Keep a validated release ready; production deployment still has a deliberate/manual decision</td>
+</tr>
+<tr>
+<td>Continuous deployment</td>
+<td>Automatically deploy every change that passes all required gates</td>
+</tr>
+</tbody></table>
+<p>For this module, the minimum emphasis is a CI pipeline with <strong>build and test</strong>. Security checks become stronger when SCA, SAST and other gates are added at the appropriate stages.</p>
+<h3 id="lecture--tls-is-necessary-but-not-the-whole-security-story" tabindex="-1">TLS is necessary but not the whole security story<a class="heading-anchor" href="#lecture--tls-is-necessary-but-not-the-whole-security-story" aria-label="Link to TLS is necessary but not the whole security story">#</a></h3><p>TLS can provide confidentiality and integrity in transit plus server authentication when configured and validated correctly. It does not automatically prevent:</p>
+<ul>
+<li>phishing on an attacker-controlled site;</li>
+<li>application-level broken access control;</li>
+<li>stolen endpoints or active sessions;</li>
+<li>insecure password recovery;</li>
+<li>unsafe storage or logging;</li>
+<li>a user ignoring certificate warnings.</li>
+</ul>
+<p>Important implementation points:</p>
+<ul>
+<li>redirect HTTP to HTTPS and consider HSTS to resist downgrade/SSL-stripping paths;</li>
+<li>enable supported modern protocol versions and approved cipher suites;</li>
+<li>prefer key agreement that provides <strong>perfect forward secrecy</strong>, so later server-key compromise does not reveal captured past sessions;</li>
+<li>protect the server private key and restrict its filesystem/runtime access;</li>
+<li>automate certificate renewal and test expiry/failure behavior;</li>
+<li>verify certificate chain, hostname and validity rather than merely “using encryption.”</li>
+</ul>
+<h3 id="lecture--password-storage-and-authentication-reasoning" tabindex="-1">Password storage and authentication reasoning<a class="heading-anchor" href="#lecture--password-storage-and-authentication-reasoning" aria-label="Link to Password storage and authentication reasoning">#</a></h3><p>A conventional server receives a password through a protected TLS channel and compares a password-hash result with a stored verifier. Because hashing is one-way, the server cannot recover the original password from the verifier.</p>
+<p>Do not confuse these layers:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Protects</th>
+<th>Does not by itself solve</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TLS</td>
+<td>Credentials and session traffic in transit</td>
+<td>Phishing, authorization, insecure endpoint/server</td>
+</tr>
+<tr>
+<td>Password hashing</td>
+<td>Stored password verifiers after database exposure</td>
+<td>Password interception, weak/reused passwords, account recovery</td>
+</tr>
+<tr>
+<td>MFA</td>
+<td>Adds another factor to authentication</td>
+<td>Session theft, approval fatigue, recovery bypass</td>
+</tr>
+<tr>
+<td>Rate limiting/lockout</td>
+<td>Slows online guessing</td>
+<td>Offline cracking of stolen verifiers</td>
+</tr>
+</tbody></table>
+<p>The lecture also introduces Secure Remote Password (SRP) as an example of a password-authenticated key-exchange design and uses it to encourage deeper analysis rather than “security theatre.” The exam-worthy point is the reasoning: identify exactly what a protocol protects, its adoption/interoperability constraints, and the attacks that remain.</p>
+<h3 id="lecture--passwordless-authentication" tabindex="-1">Passwordless authentication<a class="heading-anchor" href="#lecture--passwordless-authentication" aria-label="Link to Passwordless authentication">#</a></h3><p>“Passwordless” may refer to a one-time email/SMS link or code, an authenticator approval, or a cryptographic passkey. These have different assurance properties.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Main strength</th>
+<th>Key risks/limitations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Email link/code</td>
+<td>Familiar and easy to deploy</td>
+<td>Email account compromise, forwarding, phishing, replay, delayed delivery</td>
+</tr>
+<tr>
+<td>SMS code</td>
+<td>Broad device support</td>
+<td>SIM swap, interception, phone-number recycling, phishing</td>
+</tr>
+<tr>
+<td>Push approval</td>
+<td>Convenient possession-based flow</td>
+<td>Approval fatigue, wrong-session approval, device compromise</td>
+</tr>
+<tr>
+<td>FIDO/WebAuthn passkey</td>
+<td>Public-key challenge response; origin-bound and phishing-resistant</td>
+<td>Enrollment/recovery, device ecosystem, synchronization, user confusion and account portability</td>
+</tr>
+</tbody></table>
+<p>One-time-code controls from the lecture include:</p>
+<ul>
+<li>accept only the newest issued code/link;</li>
+<li>invalidate it after successful use;</li>
+<li>limit failed attempts;</li>
+<li>use a short expiry;</li>
+<li>rate-limit requests and prevent user enumeration;</li>
+<li>bind the result to the intended user, transaction and session;</li>
+<li>log security events without logging the secret.</li>
+</ul>
+<h3 id="lecture--fidopasskey-mental-model" tabindex="-1">FIDO/passkey mental model<a class="heading-anchor" href="#lecture--fidopasskey-mental-model" aria-label="Link to FIDO/passkey mental model">#</a></h3><p>Registration creates a public/private key pair. The service stores the public key; the authenticator protects the private key. During login, the service sends a fresh challenge, the authenticator signs it after local user verification, and the service verifies the signature and origin-related data.</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Registration: authenticator creates key pair -&gt; service stores public key
+Login:        service challenge -&gt; local user verification -&gt; signed response
+              -&gt; service verifies signature, origin and challenge freshness</code></pre></div><p>Passkeys reduce password and phishing exposure, but the design still requires secure enrollment, recovery, revocation, new-device setup, session management and audit.</p>
+<h3 id="lecture--how-it-links-to-the-labs-7" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-7" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a> defines authentication, recovery, session and cryptographic requirements.</li>
+<li><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a> implements the reverse proxy, TLS and GitHub Actions pipeline.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a> adds dependency security to the pipeline.</li>
+<li><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a> makes authentication and failure behavior repeatable tests.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a/X11b</a> can verify transport, authentication and session behavior on an authorized target.</li>
+</ul>
+<p>Source basis: Lecture 6, Secure Implementation, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-7---secure-implementation-ii-coding" tabindex="-1">Lecture 7 - Secure implementation II: coding<a class="heading-anchor" href="#lecture--lecture-7---secure-implementation-ii-coding" aria-label="Link to Lecture 7 - Secure implementation II: coding">#</a></h2><h3 id="lecture--secure-coding-reference-stack" tabindex="-1">Secure-coding reference stack<a class="heading-anchor" href="#lecture--secure-coding-reference-stack" aria-label="Link to Secure-coding reference stack">#</a></h3><p>The lecture treats secure coding as a disciplined use of maintained standards, framework controls and review checklists:</p>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Primary use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OWASP Top 10 Proactive Controls</td>
+<td>Short defensive control priorities for developers</td>
+</tr>
+<tr>
+<td>OWASP Cheat Sheet Series</td>
+<td>Focused implementation guidance for a specific security topic</td>
+</tr>
+<tr>
+<td>OWASP Security Knowledge Framework</td>
+<td>Framework/language-oriented secure coding examples and knowledge</td>
+</tr>
+<tr>
+<td>OWASP Secure Coding Practices Quick Reference Guide</td>
+<td>Broad checklist covering validation, identity, sessions, access, crypto, errors, data, communications, databases and files</td>
+</tr>
+</tbody></table>
+<p>Always match guidance to the project’s language/framework and current version. A copied snippet is not evidence until its assumptions, error handling, tests and surrounding authorization are understood.</p>
+<h3 id="lecture--proactive-controls-emphasized-in-the-lecture" tabindex="-1">Proactive controls emphasized in the lecture<a class="heading-anchor" href="#lecture--proactive-controls-emphasized-in-the-lecture" aria-label="Link to Proactive controls emphasized in the lecture">#</a></h3><table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Main implementation lesson</th>
+<th>Closest lab</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C2 Use Cryptography to Protect Data</td>
+<td>Use established protocols/libraries; protect data at rest and in transit; do not invent cryptography</td>
+<td><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a></td>
+</tr>
+<tr>
+<td>C3 Validate All Input and Handle Exceptions</td>
+<td>Validate early and server-side, encode for the output context, and fail safely</td>
+<td><a href="index.html#cheat--x08---static-code-analysis">X08</a>, <a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a</a></td>
+</tr>
+<tr>
+<td>C6 Keep Components Secure</td>
+<td>Prefer secure framework features; inventory, monitor and update third-party code</td>
+<td><a href="index.html#cheat--x06---software-composition-analysis">X06</a></td>
+</tr>
+<tr>
+<td>C9 Implement Security Logging and Monitoring</td>
+<td>Record security events safely, protect integrity and centralize monitoring</td>
+<td><a href="index.html#cheat--x09---sonarqube">X09</a>, operational evidence</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--input-validation-rules" tabindex="-1">Input validation rules<a class="heading-anchor" href="#lecture--input-validation-rules" aria-label="Link to Input validation rules">#</a></h3><p>Input validation rejects malformed or out-of-policy data before it reaches deeper components. It is one layer and does not replace parameterized SQL or contextual output encoding.</p>
+<ul>
+<li>validate as early as practical and repeat enforcement at the trusted server boundary;</li>
+<li>prefer native type/schema validators and strict type conversion;</li>
+<li>define numeric/date ranges and string/array size limits;</li>
+<li>use an allowlist for small enumerations and structured values;</li>
+<li>anchor regular expressions to the complete input where appropriate;</li>
+<li>normalize Unicode consistently before security comparisons;</li>
+<li>reject invalid input with controlled errors;</li>
+<li>validate syntax and business semantics separately.</li>
+</ul>
+<p><strong>Allowlist vs blocklist:</strong> an allowlist defines what is accepted. A blocklist tries to enumerate dangerous strings and is easily bypassed while also rejecting legitimate inputs such as names containing apostrophes.</p>
+<h3 id="lecture--redos-and-evil-regex" tabindex="-1">ReDoS and “evil regex”<a class="heading-anchor" href="#lecture--redos-and-evil-regex" aria-label="Link to ReDoS and “evil regex”">#</a></h3><p>Backtracking regex engines can explore exponentially many paths for a crafted non-matching input. Dangerous patterns often contain a repeated group whose contents also repeat or overlap, for example <code>(a+)+</code>.</p>
+<p>Risk reduction:</p>
+<ul>
+<li>avoid nested ambiguous quantifiers and overlapping alternatives;</li>
+<li>bound input length before regex processing;</li>
+<li>use simple parsing or a non-backtracking engine where appropriate;</li>
+<li>test adversarial near-matches, not only valid examples;</li>
+<li>use time/resource limits as containment, not as the primary correction;</li>
+<li>never allow an untrusted user to supply an executable regex without strong controls.</li>
+</ul>
+<h3 id="lecture--sql-injection-prevention" tabindex="-1">SQL injection prevention<a class="heading-anchor" href="#lecture--sql-injection-prevention" aria-label="Link to SQL injection prevention">#</a></h3><p>Preferred order of defense:</p>
+<ol>
+<li>Use prepared statements/parameterized queries.</li>
+<li>Use safely constructed stored procedures where appropriate.</li>
+<li>Apply allowlist validation for identifiers or values that cannot be parameterized.</li>
+<li>Treat escaping as a fragile last resort specific to the exact interpreter/context.</li>
+<li>Apply least privilege to the application’s database identity.</li>
+</ol>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">SQL structure: fixed by developer
+Untrusted value: bound as data through a parameter
+Database account: allowed only the operations the application needs</code></pre></div><p>Validation alone is not the primary SQL-injection defense because a value acceptable to the business may still contain characters meaningful to SQL.</p>
+<h3 id="lecture--secure-logging" tabindex="-1">Secure logging<a class="heading-anchor" href="#lecture--secure-logging" aria-label="Link to Secure logging">#</a></h3><ul>
+<li>encode or validate dangerous control characters to prevent log injection;</li>
+<li>never log passwords, session IDs, access tokens, full card data or unnecessary personal data;</li>
+<li>protect log access and integrity;</li>
+<li>forward important logs to a separate/central service so one compromised node cannot erase all evidence;</li>
+<li>define rotation, retention, monitoring and alerting;</li>
+<li>include useful correlation and outcome fields without exposing secrets.</li>
+</ul>
+<h3 id="lecture--docker-implementation-workflow" tabindex="-1">Docker implementation workflow<a class="heading-anchor" href="#lecture--docker-implementation-workflow" aria-label="Link to Docker implementation workflow">#</a></h3><p>A <code>Dockerfile</code> assembles a repeatable application image. Compose describes and runs the application’s multiple services. Security review must include:</p>
+<ul>
+<li>trusted/minimal base images and pinned versions;</li>
+<li>non-root runtime users where possible;</li>
+<li>no secrets baked into image layers;</li>
+<li>small build context and <code>.dockerignore</code>;</li>
+<li>only required ports and capabilities;</li>
+<li>reproducible local build/test behavior matching CI.</li>
+</ul>
+<h3 id="lecture--how-it-links-to-the-labs-8" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-8" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-1---docker-and-docker-compose">Lab 1</a> applies the Dockerfile/Compose workflow and service isolation.</li>
+<li><a href="index.html#cheat--x05---web-proxy-tls-and-github-actions">X05</a> applies cryptographic transport and repeatable pipeline controls.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a> inventories and monitors components.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08/X09</a> detect selected injection, validation, logging and quality patterns.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a/X11b</a> probe validation and injection behavior on an explicitly authorized target.</li>
+</ul>
+<p>Source basis: Lecture 7, Secure Implementation 2 - Coding, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-8---secure-implementation-iii-testing" tabindex="-1">Lecture 8 - Secure implementation III: testing<a class="heading-anchor" href="#lecture--lecture-8---secure-implementation-iii-testing" aria-label="Link to Lecture 8 - Secure implementation III: testing">#</a></h2><h3 id="lecture--test-early-and-test-often" tabindex="-1">Test early and test often<a class="heading-anchor" href="#lecture--test-early-and-test-often" aria-label="Link to Test early and test often">#</a></h3><p>Security testing belongs throughout development. Waiting for a completed system makes design and implementation faults more expensive to correct.</p>
+<p>The testing pyramid suggests many fast unit tests, fewer integration/service tests, and a smaller number of slower UI/end-to-end tests:</p>
+<table>
+<thead>
+<tr>
+<th>Test level</th>
+<th>Scope</th>
+<th>Security examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unit</td>
+<td>Function/class/component in isolation</td>
+<td>Validator boundaries, authorization predicate, token expiry calculation, safe exception result</td>
+</tr>
+<tr>
+<td>Integration</td>
+<td>Multiple components and real interfaces</td>
+<td>API plus database ownership check, session rotation, transaction rollback, service permissions</td>
+</tr>
+<tr>
+<td>UI/end-to-end</td>
+<td>User-visible flow through the system</td>
+<td>Login/logout, role-specific navigation, recovery, generic error message, browser security behavior</td>
+</tr>
+<tr>
+<td>Manual security test</td>
+<td>Contextual/adversarial exploration</td>
+<td>Business logic abuse, chained weaknesses, usability/security tradeoffs</td>
+</tr>
+</tbody></table>
+<p>The purpose is not merely code coverage. A security test verifies that an implemented control satisfies its security requirement under normal, boundary, negative, abuse and failure conditions.</p>
+<h3 id="lecture--requirements-to-tests-chain" tabindex="-1">Requirements-to-tests chain<a class="heading-anchor" href="#lecture--requirements-to-tests-chain" aria-label="Link to Requirements-to-tests chain">#</a></h3><div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Misuse case / risk
+  -&gt; security requirement
+  -&gt; ASVS verification requirement
+  -&gt; automated and/or manual test case
+  -&gt; expected secure result
+  -&gt; evidence, finding and remediation</code></pre></div><p>Not every security test can be automated. Combine repeatable automation with focused manual review and testing.</p>
+<h3 id="lecture--owasp-asvs" tabindex="-1">OWASP ASVS<a class="heading-anchor" href="#lecture--owasp-asvs" aria-label="Link to OWASP ASVS">#</a></h3><p>The Application Security Verification Standard is a catalog of verifiable application-security requirements. The lecture groups them into 14 areas including architecture/threat modeling, authentication, sessions, access control, validation, cryptography, logging, data protection, communications, malicious code, business logic, files, APIs and configuration.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Intended assurance idea</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Level 1</td>
+<td>Low-assurance baseline; requirements can be assessed mainly through penetration testing</td>
+</tr>
+<tr>
+<td>Level 2</td>
+<td>Recommended for most applications handling data that needs protection</td>
+</tr>
+<tr>
+<td>Level 3</td>
+<td>Highest assurance for critical/high-value or highly sensitive applications</td>
+</tr>
+</tbody></table>
+<p>Choose the target level based on risk. Do not claim a complete level from a partial scanner run.</p>
+<h3 id="lecture--owasp-wstg" tabindex="-1">OWASP WSTG<a class="heading-anchor" href="#lecture--owasp-wstg" aria-label="Link to OWASP WSTG">#</a></h3><p>The Web Security Testing Guide turns security topics into test objectives and procedures. Categories covered in the lecture include:</p>
+<ul>
+<li>information gathering;</li>
+<li>configuration/deployment;</li>
+<li>identity, authentication and authorization;</li>
+<li>session management;</li>
+<li>input validation;</li>
+<li>error handling;</li>
+<li>weak cryptography;</li>
+<li>business logic;</li>
+<li>client-side behavior.</li>
+</ul>
+<p>ASVS helps state <strong>what must be verified</strong>; WSTG helps design <strong>how to test it</strong>; a checklist/report preserves <strong>what was actually done and found</strong>.</p>
+<h3 id="lecture--authentication-test-examples" tabindex="-1">Authentication test examples<a class="heading-anchor" href="#lecture--authentication-test-examples" aria-label="Link to Authentication test examples">#</a></h3><p>For a password or login requirement, test more than one “happy path”:</p>
+<ul>
+<li>accepted minimum/maximum lengths and characters;</li>
+<li>long passphrases, spaces and Unicode where required;</li>
+<li>commonly compromised password rejection;</li>
+<li>change/reset requiring the correct current proof;</li>
+<li>history/reuse behavior without creating a predictable bypass;</li>
+<li>encrypted credential transport;</li>
+<li>no default credentials;</li>
+<li>generic responses that do not reveal whether an account exists;</li>
+<li>consistent protection across web, mobile and alternate endpoints.</li>
+</ul>
+<h3 id="lecture--lockout-captcha-and-recovery" tabindex="-1">Lockout, CAPTCHA, and recovery<a class="heading-anchor" href="#lecture--lockout-captcha-and-recovery" aria-label="Link to Lockout, CAPTCHA, and recovery">#</a></h3><p>Test lockout thresholds incrementally with an account you are authorized and able to lock. Verify when the lock occurs, how long it lasts, whether it applies consistently, whether it enables denial-of-service against victims, and whether unlock/recovery can be abused.</p>
+<p>A CAPTCHA can slow automation but should not replace server-side rate control/lockout. Test whether it can be omitted, replayed, bypassed through another step/API, trusted only client-side, or treated as successful on errors.</p>
+<p>An unlock link should be unpredictable, single-use, short-lived and bound to the intended account/process. Unlocking is distinct from changing/recovering a password even when some security practices overlap.</p>
+<h3 id="lecture--logging-verification" tabindex="-1">Logging verification<a class="heading-anchor" href="#lecture--logging-verification" aria-label="Link to Logging verification">#</a></h3><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Verify</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Content</td>
+<td>Required security events are recorded; secrets and unnecessary personal data are excluded</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Important evidence is sent away from the application host or otherwise protected from local compromise</td>
+</tr>
+<tr>
+<td>Rotation/retention</td>
+<td>Policy duration is met; permissions remain restrictive; an attacker cannot cheaply rotate away evidence</td>
+</tr>
+<tr>
+<td>Access control</td>
+<td>Raw logs and search tools are separated from ordinary user/admin roles</td>
+</tr>
+<tr>
+<td>Review/alerting</td>
+<td>Relevant patterns are detected, such as concentrated 40x probing or repeated 50x failures</td>
+</tr>
+</tbody></table>
+<h3 id="lecture--security-test-report" tabindex="-1">Security-test report<a class="heading-anchor" href="#lecture--security-test-report" aria-label="Link to Security-test report">#</a></h3><p>A useful report communicates risk clearly:</p>
+<ol>
+<li>scope, authorization, environment and limitations;</li>
+<li>executive summary;</li>
+<li>method and test coverage;</li>
+<li>reproducible findings with evidence and impact;</li>
+<li>recommended correction and references;</li>
+<li>severity/context, status and residual risk;</li>
+<li>appendices such as the completed checklist.</li>
+</ol>
+<p>Lecture 8 also frames the later QA handoff: inspect the implementation explanation, perform manual source review, run static analysis and DAST, distinguish your own application from the assigned application, and recommend fixes supported by CWE/CVE or other reliable references where relevant.</p>
+<h3 id="lecture--how-it-links-to-the-labs-9" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-9" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--lab-2---secure-software-requirements">Lab 2</a> provides the requirements and acceptance criteria to verify.</li>
+<li><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a> implements the unit/integration/Selenium automation pyramid in CI.</li>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08/X09</a> provide automated source review and triage evidence.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a</a> applies DAST and WSTG-style thinking to an authorized running application.</li>
+<li><a href="index.html#cheat--x11b---fuzzing-with-burp-suite">X11b</a> explores boundary, malformed and repeated inputs within explicit scope.</li>
+</ul>
+<p>Source basis: Lecture 8, Secure Implementation 3 - Testing, AY2025T3.</p>
+<hr>
+<h2 id="lecture--lecture-9---static-code-analysis-i" tabindex="-1">Lecture 9 - Static code analysis I<a class="heading-anchor" href="#lecture--lecture-9---static-code-analysis-i" aria-label="Link to Lecture 9 - Static code analysis I">#</a></h2><h3 id="lecture--static-versus-dynamic-analysis" tabindex="-1">Static versus dynamic analysis<a class="heading-anchor" href="#lecture--static-versus-dynamic-analysis" aria-label="Link to Static versus dynamic analysis">#</a></h3><p><strong>Static analysis</strong> examines source code or another program representation without executing the program. <strong>Dynamic analysis</strong> observes a running program. Both are necessary because they see different evidence.</p>
+<table>
+<thead>
+<tr>
+<th>Static analysis strengths</th>
+<th>Static analysis limits</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Can reason across many paths and incomplete code</td>
+<td>Usually checks only selected properties</td>
+</tr>
+<tr>
+<td>Finds recurring patterns early</td>
+<td>Can miss real issues (false negatives)</td>
+</tr>
+<tr>
+<td>Fits editor, commit and CI feedback loops</td>
+<td>Can report non-issues (false positives)</td>
+</tr>
+<tr>
+<td>Can trace data/control flow beyond one test input</td>
+<td>Runtime configuration, environment and business context may be absent</td>
+</tr>
+<tr>
+<td>Enforces coding/API rules consistently</td>
+<td>Complex heaps, reflection, dynamic behavior and external services are difficult</td>
+</tr>
+</tbody></table>
+<p>Static analysis complements manual code review, dependency analysis and DAST; it does not certify that an application is secure.</p>
+<h3 id="lecture--what-static-analysis-can-detect" tabindex="-1">What static analysis can detect<a class="heading-anchor" href="#lecture--what-static-analysis-can-detect" aria-label="Link to What static analysis can detect">#</a></h3><ul>
+<li>buffer and memory errors in applicable languages;</li>
+<li>null dereferences and uninitialized data;</li>
+<li>unused/dead code and suspicious initialization;</li>
+<li>unvalidated or tainted input reaching a dangerous sink;</li>
+<li>API/framework rule violations;</li>
+<li>hard-coded secrets or suspicious constants;</li>
+<li>resource leaks and some race conditions;</li>
+<li>unsafe coding patterns and broken encapsulation.</li>
+</ul>
+<h3 id="lecture--spectrum-of-analysis" tabindex="-1">Spectrum of analysis<a class="heading-anchor" href="#lecture--spectrum-of-analysis" aria-label="Link to Spectrum of analysis">#</a></h3><div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Simple syntax/style checks
+  -&gt; pattern matching
+  -&gt; type-aware checks
+  -&gt; control/data-flow analysis
+  -&gt; abstract interpretation / model checking
+  -&gt; program verification / theorem proving</code></pre></div><p>Power and precision usually cost more compute, setup, annotations, tuning and developer effort.</p>
+<h3 id="lecture--core-techniques" tabindex="-1">Core techniques<a class="heading-anchor" href="#lecture--core-techniques" aria-label="Link to Core techniques">#</a></h3><table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Mental model</th>
+<th>Example use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pattern matching</td>
+<td>Search tokens/syntax for a known shape</td>
+<td>Suspicious hard-coded credential or banned function</td>
+</tr>
+<tr>
+<td>Data-flow analysis</td>
+<td>Track where values/taint/definitions travel</td>
+<td>Untrusted request input reaches SQL/command sink</td>
+</tr>
+<tr>
+<td>Control-flow analysis</td>
+<td>Model basic blocks and possible branches/jumps</td>
+<td>Variable may remain uninitialized on one path</td>
+</tr>
+<tr>
+<td>Abstract interpretation</td>
+<td>Approximate many concrete runtime states with a manageable abstract state</td>
+<td>Possible divide-by-zero or null state</td>
+</tr>
+<tr>
+<td>Model checking</td>
+<td>Check whether a model satisfies a stated property</td>
+<td>Forbidden state or sequence is reachable</td>
+</tr>
+<tr>
+<td>Constraint solving</td>
+<td>Determine values/path conditions that satisfy program constraints</td>
+<td>Produce a path demonstrating a possible failure</td>
+</tr>
+<tr>
+<td>Program verification/theorem proving</td>
+<td>Prove specified properties using formal assertions/logic</td>
+<td>High-assurance safety/security-critical property</td>
+</tr>
+</tbody></table>
+<p>A <strong>basic block</strong> is a straight-line sequence with entry at the beginning and control transfer at the end. A control-flow graph connects these blocks with directed edges. Data-flow analysis then reasons about values or facts along those possible paths.</p>
+<h3 id="lecture--soundness-approximation-and-findings" tabindex="-1">Soundness, approximation, and findings<a class="heading-anchor" href="#lecture--soundness-approximation-and-findings" aria-label="Link to Soundness, approximation, and findings">#</a></h3><p>Because programs can have loops, huge state spaces and dynamic behavior, analysis uses abstractions. An over-approximation considers behavior that may not occur and can create false positives; an under-approximation may omit behavior and create false negatives.</p>
+<table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>True positive</td>
+<td>Tool reports a real relevant issue</td>
+</tr>
+<tr>
+<td>False positive</td>
+<td>Tool reports an issue that is not exploitable/applicable in context</td>
+</tr>
+<tr>
+<td>True negative</td>
+<td>No issue exists for the checked property and none is reported</td>
+</tr>
+<tr>
+<td>False negative</td>
+<td>A real issue is missed</td>
+</tr>
+</tbody></table>
+<p>Suppress a finding only with documented evidence and narrow scope. Broad suppression can hide future real vulnerabilities.</p>
+<h3 id="lecture--criteria-for-a-successful-static-analysis-program" tabindex="-1">Criteria for a successful static-analysis program<a class="heading-anchor" href="#lecture--criteria-for-a-successful-static-analysis-program" aria-label="Link to Criteria for a successful static-analysis program">#</a></h3><ul>
+<li>acceptable false-positive and false-negative tradeoffs;</li>
+<li>warning volume that developers can realistically triage;</li>
+<li>clear location, context, data/control-flow trace and remediation help;</li>
+<li>findings that can be fixed and verified;</li>
+<li>rules tuned to the project without silencing useful categories;</li>
+<li>explicit design intent through annotations/assertions where supported;</li>
+<li>quality gates based on agreed severity and new-code policy;</li>
+<li>measured remediation and clean reruns.</li>
+</ul>
+<h3 id="lecture--triage-workflow" tabindex="-1">Triage workflow<a class="heading-anchor" href="#lecture--triage-workflow" aria-label="Link to Triage workflow">#</a></h3><div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Finding -&gt; locate source/sink and path -&gt; reproduce/reason about reachability
+        -&gt; classify CWE and impact -&gt; fix root cause
+        -&gt; add regression test -&gt; rerun analysis -&gt; document residual risk</code></pre></div><p>Prioritize exposure, data sensitivity, reachability, privilege and exploitability rather than sorting only by the tool’s label.</p>
+<h3 id="lecture--how-it-links-to-the-labs-10" tabindex="-1">How it links to the labs<a class="heading-anchor" href="#lecture--how-it-links-to-the-labs-10" aria-label="Link to How it links to the labs">#</a></h3><ul>
+<li><a href="index.html#cheat--x08---static-code-analysis">X08</a> introduces ESLint security rules, SARIF and CodeQL as practical points on the static-analysis spectrum.</li>
+<li><a href="index.html#cheat--x09---sonarqube">X09</a> adds centralized findings, quality metrics, triage and quality gates.</li>
+<li><a href="index.html#cheat--x06---software-composition-analysis">X06</a> is complementary: SCA identifies component/version risk while SAST reasons about application code.</li>
+<li><a href="index.html#cheat--x07---automated-testing-with-github-actions">X07</a> provides dynamic evidence and regression tests for fixes.</li>
+<li><a href="index.html#cheat--x11a---vulnerability-assessment-with-owasp-zap">X11a/X11b</a> test the running behavior static analysis cannot fully observe.</li>
+</ul>
+<p>Source basis: Lecture 9, Static Code Analysis x01, AY2025T3.</p>
+<hr>
+<h2 id="lecture--detailed-lecture-to-lab-traceability-matrix" tabindex="-1">Detailed lecture-to-lab traceability matrix<a class="heading-anchor" href="#lecture--detailed-lecture-to-lab-traceability-matrix" aria-label="Link to Detailed lecture-to-lab traceability matrix">#</a></h2><table>
+<thead>
+<tr>
+<th>Lecture concept</th>
+<th>Requirement/design artifact</th>
+<th>Lab activity</th>
+<th>Evidence to retain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SSDLC and quality gates</td>
+<td>Security plan and definition of done</td>
+<td>X05-X09 CI integration</td>
+<td>Workflow policy and passing/failing runs</td>
+</tr>
+<tr>
+<td>OWASP Broken Access Control</td>
+<td>Authorization/ownership requirements</td>
+<td>Lab 2, X07, X11a</td>
+<td>Access matrix, negative tests, scan validation</td>
+</tr>
+<tr>
+<td>Security Misconfiguration</td>
+<td>Hardened baseline and safe-error requirement</td>
+<td>Lab 1, X05, X09</td>
+<td>Compose/Nginx config and review results</td>
+</tr>
+<tr>
+<td>Software Supply Chain Failures</td>
+<td>Approved dependency/update process</td>
+<td>X06</td>
+<td>SCA report, upgrade PR, exception record</td>
+</tr>
+<tr>
+<td>Cryptographic Failures</td>
+<td>Data classification and cryptographic requirements</td>
+<td>Lab 2, X05</td>
+<td>TLS test/config and secret-handling evidence</td>
+</tr>
+<tr>
+<td>Injection</td>
+<td>Validation, parameterization, output-encoding requirements</td>
+<td>X08, X11a/X11b</td>
+<td>SARIF, requests/responses, regression tests</td>
+</tr>
+<tr>
+<td>Insecure Design</td>
+<td>Misuse cases and threat model</td>
+<td>Lab 2, X03/X04</td>
+<td>Misuse diagram and threat report</td>
+</tr>
+<tr>
+<td>Authentication Failures</td>
+<td>Authentication/recovery/session requirements</td>
+<td>Lab 2, X07, X11b</td>
+<td>Automated tests and authorized fuzz results</td>
+</tr>
+<tr>
+<td>Integrity Failures</td>
+<td>Trusted build/update and data-integrity design</td>
+<td>X05, X06, X08</td>
+<td>Protected workflow, pinned dependency, analysis</td>
+</tr>
+<tr>
+<td>Logging/Alerting Failures</td>
+<td>Accountability and monitoring requirements</td>
+<td>Lab 2, X09, X11a</td>
+<td>Audit events, alerts, retained reports</td>
+</tr>
+<tr>
+<td>Exceptional Conditions</td>
+<td>Fail-secure and rollback requirements</td>
+<td>X07, X08</td>
+<td>Failure-path tests and static findings</td>
+</tr>
+<tr>
+<td>CVE/NVD/CVSS</td>
+<td>Vulnerability triage procedure</td>
+<td>X06, X09</td>
+<td>Finding record with context and decision</td>
+</tr>
+<tr>
+<td>CAPEC/ATT&amp;CK</td>
+<td>Attack scenarios and detection ideas</td>
+<td>X03/X04</td>
+<td>Threat scenarios and monitoring controls</td>
+</tr>
+<tr>
+<td>SAMM/BSIMM/SDL</td>
+<td>Repeatable assurance roadmap</td>
+<td>All labs</td>
+<td>Tool/process coverage and improvement backlog</td>
+</tr>
+<tr>
+<td>CIA/AAA</td>
+<td>Security requirement catalogue</td>
+<td>Lab 2</td>
+<td>Requirement IDs and acceptance tests</td>
+</tr>
+<tr>
+<td>Anti-requirements/misuse cases</td>
+<td>Adversarial requirements</td>
+<td>Lab 2, X03/X04</td>
+<td>Misuse case linked to threat/control/test</td>
+</tr>
+<tr>
+<td>DFD and trust boundaries</td>
+<td>Threat-model diagram</td>
+<td>X03/X04</td>
+<td>Labelled diagram and report</td>
+</tr>
+<tr>
+<td>STRIDE</td>
+<td>Categorized threats</td>
+<td>X03/X04</td>
+<td>Status, mitigation, owner, validation</td>
+</tr>
+<tr>
+<td>Minimize attack surface</td>
+<td>Reduced ports/features/roles</td>
+<td>Lab 1, X05</td>
+<td>Network/service inventory</td>
+</tr>
+<tr>
+<td>Secure defaults</td>
+<td>Hardened initial configuration</td>
+<td>Lab 1, X05</td>
+<td>Configuration review</td>
+</tr>
+<tr>
+<td>Least privilege/separation</td>
+<td>Role and service permission design</td>
+<td>Lab 1, Lab 2, X05</td>
+<td>Access matrix and deployment configuration</td>
+</tr>
+<tr>
+<td>Defense in depth</td>
+<td>Independent preventive/detective controls</td>
+<td>X05-X11</td>
+<td>Layered architecture and evidence</td>
+</tr>
+<tr>
+<td>Fix correctly</td>
+<td>Root-cause remediation plus regression</td>
+<td>X07-X11</td>
+<td>Fix commit, test, and clean rerun</td>
+</tr>
+<tr>
+<td>Confidentiality/integrity design</td>
+<td>Crypto, masking, validation, transaction controls</td>
+<td>X05, X07</td>
+<td>TLS and behavior tests</td>
+</tr>
+<tr>
+<td>Availability design</td>
+<td>Limits, replication, failover, recovery</td>
+<td>Lab 1, X07</td>
+<td>Health checks, recovery/failure evidence</td>
+</tr>
+<tr>
+<td>Accountability design</td>
+<td>Protected audit trail</td>
+<td>Lab 2, X09, X11</td>
+<td>Audit/alert evidence</td>
+</tr>
+<tr>
+<td>D2 implementation evidence</td>
+<td>Traceable code/config/test documentation</td>
+<td>X05-X09</td>
+<td>Exact commit, filenames, diagrams and repeated CI runs</td>
+</tr>
+<tr>
+<td>DevSecOps pipeline</td>
+<td>Security integrated into build/test delivery</td>
+<td>X05-X09</td>
+<td>Versioned workflow, protected secrets and enforced gates</td>
+</tr>
+<tr>
+<td>TLS/HSTS/PFS</td>
+<td>Secure transport requirement and threat rationale</td>
+<td>X05, X11a</td>
+<td>Protocol/cipher config, certificate and redirect/HSTS checks</td>
+</tr>
+<tr>
+<td>Passwordless/passkeys</td>
+<td>Enrollment, recovery, challenge and session requirements</td>
+<td>Lab 2, X07, X11</td>
+<td>Flow design, negative tests and audit evidence</td>
+</tr>
+<tr>
+<td>OWASP Proactive Controls</td>
+<td>Secure-coding checklist mapped to project controls</td>
+<td>X06-X09</td>
+<td>Review record, code references and clean reruns</td>
+</tr>
+<tr>
+<td>Input validation/ReDoS</td>
+<td>Bounded server-side validation and resource requirements</td>
+<td>X07, X08, X11b</td>
+<td>Boundary/adversarial tests and static findings</td>
+</tr>
+<tr>
+<td>Parameterized SQL</td>
+<td>Injection-prevention and least-privilege requirements</td>
+<td>X07, X08, X11</td>
+<td>Query code, tests, scan evidence and DB role config</td>
+</tr>
+<tr>
+<td>ASVS/WSTG</td>
+<td>Verification catalogue and test procedure</td>
+<td>X07, X11a/X11b</td>
+<td>Requirement-to-test map and completed checklist</td>
+</tr>
+<tr>
+<td>Testing pyramid</td>
+<td>Balanced unit/integration/UI/manual test plan</td>
+<td>X07</td>
+<td>Test inventory, CI result and coverage rationale</td>
+</tr>
+<tr>
+<td>Static-analysis theory</td>
+<td>SAST rule selection, triage and quality-gate policy</td>
+<td>X08/X09</td>
+<td>SARIF/issues, disposition, fix and clean rerun</td>
+</tr>
+</tbody></table>
+<h2 id="lecture--reverse-lookup-start-from-the-lab" tabindex="-1">Reverse lookup: start from the lab<a class="heading-anchor" href="#lecture--reverse-lookup-start-from-the-lab" aria-label="Link to Reverse lookup: start from the lab">#</a></h2><h3 id="lecture--lab-1---docker-compose-infrastructure" tabindex="-1">Lab 1 - Docker Compose infrastructure<a class="heading-anchor" href="#lecture--lab-1---docker-compose-infrastructure" aria-label="Link to Lab 1 - Docker Compose infrastructure">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 1-P1: repeatable development environment and lifecycle foundation.</li>
+<li>Lecture 4: attack surface, secure defaults, least privilege, defense in depth.</li>
+<li>Lecture 5: physical/logical topology, availability, data storage, service accounts.</li>
+<li>Lecture 7: Dockerfile/Compose development workflow, minimal images, secret handling and least exposure.</li>
+</ul>
+<p>Questions to answer while doing it:</p>
+<ul>
+<li>Which ports are published, and can any be removed?</li>
+<li>Which services need to communicate, and on which network?</li>
+<li>What data persists, and how is it protected/backed up?</li>
+<li>Which credentials/permissions does each service receive?</li>
+</ul>
+<h3 id="lecture--lab-2---secure-requirements" tabindex="-1">Lab 2 - Secure requirements<a class="heading-anchor" href="#lecture--lab-2---secure-requirements" aria-label="Link to Lab 2 - Secure requirements">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 2-P2: requirement types, process, CIA, authentication.</li>
+<li>Lecture 3-P1: authorization, accountability, session/error/configuration/operations, misuse cases.</li>
+<li>Lecture 3-P2: requirements become the objectives and scope of the threat model.</li>
+<li>Lecture 6: TLS, password storage, passwordless enrollment/recovery and session requirements.</li>
+<li>Lecture 8: requirements must map to ASVS/WSTG verification and expected results.</li>
+</ul>
+<p>Deliverable logic:</p>
+<div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">Asset + threat/risk -&gt; requirement -&gt; acceptance test -&gt; owner/evidence</code></pre></div><h3 id="lecture--x03x04---threat-modeling-tools" tabindex="-1">X03/X04 - Threat-modeling tools<a class="heading-anchor" href="#lecture--x03x04---threat-modeling-tools" aria-label="Link to X03/X04 - Threat-modeling tools">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 3-P2: DFDs, trust boundaries, actors, attack trees, STRIDE.</li>
+<li>Lecture 4: design principles guide mitigation selection.</li>
+<li>Lecture 5: four-part secure design process and data access matrix.</li>
+</ul>
+<p>Do not stop after drawing. Triage threats, document mitigations, assign ownership, and validate implemented controls.</p>
+<h3 id="lecture--x05---nginx-tls-and-github-actions" tabindex="-1">X05 - Nginx, TLS, and GitHub Actions<a class="heading-anchor" href="#lecture--x05---nginx-tls-and-github-actions" aria-label="Link to X05 - Nginx, TLS, and GitHub Actions">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 1-P1: security gates in the SSDLC.</li>
+<li>Lecture 1-P2: cryptographic failure and integrity of delivery.</li>
+<li>Lecture 4: defense in depth, secure defaults, reduced attack surface.</li>
+<li>Lecture 5: confidentiality in transit and physical/logical architecture.</li>
+<li>Lecture 5.5: repeated CI/CD and implementation evidence required for the handoff.</li>
+<li>Lecture 6: DevSecOps pipeline, TLS, HSTS, cipher/key choices and perfect forward secrecy.</li>
+<li>Lecture 7: cryptography must use established protocols and secure configuration.</li>
+</ul>
+<h3 id="lecture--x06---dependency-analysis" tabindex="-1">X06 - Dependency analysis<a class="heading-anchor" href="#lecture--x06---dependency-analysis" aria-label="Link to X06 - Dependency analysis">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 1-P2: software supply chain failures.</li>
+<li>Lecture 2-P1: CVE/NVD/CVSS triage and assurance maturity.</li>
+<li>Lecture 4: do not trust external services/components.</li>
+<li>Lecture 5.5: dependency inventory and dependency-check evidence.</li>
+<li>Lecture 7: proactive control C6 and maintained component/framework security.</li>
+<li>Lecture 9: SCA complements static analysis but answers a different question.</li>
+</ul>
+<h3 id="lecture--x07---automated-tests-and-selenium" tabindex="-1">X07 - Automated tests and Selenium<a class="heading-anchor" href="#lecture--x07---automated-tests-and-selenium" aria-label="Link to X07 - Automated tests and Selenium">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 1-P1: quality gates and sprint security.</li>
+<li>Lecture 3-P1: anti-requirements, input boundaries, velocity, transaction interruption.</li>
+<li>Lecture 4: fix correctly with regression tests and fail securely.</li>
+<li>Lecture 5: authentication, authorization, resource locking, and availability behavior.</li>
+<li>Lecture 5.5: automated-test evidence for the frozen implementation.</li>
+<li>Lecture 6: pipeline gates and authentication/passwordless behavior.</li>
+<li>Lecture 8: testing pyramid, control verification and requirements-to-tests traceability.</li>
+<li>Lecture 9: dynamic tests complement static reasoning and verify remediations.</li>
+</ul>
+<h3 id="lecture--x08x09---static-analysis-and-sonarqube" tabindex="-1">X08/X09 - Static analysis and SonarQube<a class="heading-anchor" href="#lecture--x08x09---static-analysis-and-sonarqube" aria-label="Link to X08/X09 - Static analysis and SonarQube">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 1-P2: injection, exceptional conditions, and common weakness patterns.</li>
+<li>Lecture 2-P1: assurance activities and vulnerability prioritization.</li>
+<li>Lecture 4: scanners complement but do not replace design review.</li>
+<li>Lecture 5.5: static-analysis evidence forms part of the implementation/QA handoff.</li>
+<li>Lecture 7: secure coding patterns, ReDoS, validation, logging and parameterized queries.</li>
+<li>Lecture 8: automated source review plus requirement-based tests and reporting.</li>
+<li>Lecture 9: analysis spectrum, data/control flow, approximation, false positives/negatives and triage.</li>
+</ul>
+<h3 id="lecture--x11ax11b---zap-and-burp" tabindex="-1">X11a/X11b - ZAP and Burp<a class="heading-anchor" href="#lecture--x11ax11b---zap-and-burp" aria-label="Link to X11a/X11b - ZAP and Burp">#</a></h3><p>Lecture connections:</p>
+<ul>
+<li>Lecture 1-P2: attacker-visible OWASP vulnerability categories.</li>
+<li>Lecture 3-P1: misuse cases, input validation, velocity, and visibility.</li>
+<li>Lecture 3-P2: Web attacker model, entry/exit points, and threat validation.</li>
+<li>Lecture 5: verification of selected CIA/AAA controls.</li>
+<li>Lecture 6: TLS, authentication, passwordless, session and residual phishing risks.</li>
+<li>Lecture 7: adversarial validation, injection and logging behavior.</li>
+<li>Lecture 8: WSTG categories, authentication/lockout/CAPTCHA tests and security reporting.</li>
+<li>Lecture 9: dynamic testing exposes runtime behavior unavailable to static analysis.</li>
+</ul>
+<p>Only test a target within explicit authorization and agreed impact limits.</p>
+<h2 id="lecture--quiz-and-exam-quick-recall" tabindex="-1">Quiz and exam quick recall<a class="heading-anchor" href="#lecture--quiz-and-exam-quick-recall" aria-label="Link to Quiz and exam quick recall">#</a></h2><h3 id="lecture--one-line-distinctions" tabindex="-1">One-line distinctions<a class="heading-anchor" href="#lecture--one-line-distinctions" aria-label="Link to One-line distinctions">#</a></h3><ul>
+<li><strong>Authentication vs authorization:</strong> prove identity vs decide permitted action.</li>
+<li><strong>Confidentiality vs privacy:</strong> preventing unauthorized disclosure vs appropriate handling of personal information and individual rights.</li>
+<li><strong>Threat vs vulnerability:</strong> possible cause/scenario of harm vs weakness that enables it.</li>
+<li><strong>Risk vs severity:</strong> contextual likelihood/impact vs standardized technical seriousness.</li>
+<li><strong>Flaw vs bug:</strong> unsafe design vs incorrect implementation.</li>
+<li><strong>Hashing vs encryption:</strong> one-way digest vs reversible transformation with a key.</li>
+<li><strong>Encoding vs encryption:</strong> representation format vs confidentiality control.</li>
+<li><strong>RBAC vs ownership check:</strong> role grants general capability; ownership constrains access to a particular object.</li>
+<li><strong>Replication vs backup:</strong> live redundant copy/capacity vs recoverable historical copy.</li>
+<li><strong>RTO vs RPO:</strong> restore-time target vs acceptable data-loss window.</li>
+<li><strong>SAST vs DAST:</strong> analyze code/artifacts vs test a running system.</li>
+<li><strong>SCA vs SAST:</strong> analyze third-party components vs analyze application code patterns.</li>
+<li><strong>CVE vs CWE:</strong> specific public vulnerability vs weakness category.</li>
+<li><strong>CAPEC vs ATT&amp;CK:</strong> attack-pattern catalogue vs observed adversary tactics/techniques knowledge base.</li>
+<li><strong>Repudiation vs non-repudiation:</strong> denying an action vs evidence that counters denial.</li>
+<li><strong>Continuous delivery vs deployment:</strong> release remains ready for a deliberate deployment decision vs every passing change is deployed automatically.</li>
+<li><strong>TLS vs HSTS:</strong> TLS protects an established connection vs HSTS tells a supporting browser to use HTTPS and resist HTTP downgrade paths.</li>
+<li><strong>Passwordless vs passkey:</strong> passwordless is a broad login category; a passkey is a FIDO/WebAuthn public-key credential.</li>
+<li><strong>Validation vs parameterization:</strong> validation enforces allowed input policy; parameterization keeps untrusted values separate from SQL structure.</li>
+<li><strong>ASVS vs WSTG:</strong> verifiable security requirements vs practical web-security testing guidance.</li>
+<li><strong>Unit vs integration vs UI test:</strong> one component vs cooperating components vs the user-visible end-to-end flow.</li>
+<li><strong>False positive vs false negative:</strong> reported non-issue vs real issue the tool misses.</li>
+<li><strong>Data flow vs control flow:</strong> how values/facts move vs which execution paths and blocks may be reached.</li>
+</ul>
+<h3 id="lecture--memory-aids" tabindex="-1">Memory aids<a class="heading-anchor" href="#lecture--memory-aids" aria-label="Link to Memory aids">#</a></h3><div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">CIA    = Confidentiality, Integrity, Availability
+AAA    = Authentication, Authorization, Accountability
+STRIDE = Spoofing, Tampering, Repudiation,
+         Information Disclosure, Denial of Service,
+         Elevation of Privilege
+IVTV   = Input validation, Velocity, Transactions, Visibility
+CI/CD  = Continuous Integration / Continuous Delivery or Deployment
+ASVS   = Application Security Verification Standard
+WSTG   = Web Security Testing Guide
+SAST   = Static Application Security Testing
+DAST   = Dynamic Application Security Testing</code></pre></div><h3 id="lecture--five-questions-for-any-feature" tabindex="-1">Five questions for any feature<a class="heading-anchor" href="#lecture--five-questions-for-any-feature" aria-label="Link to Five questions for any feature">#</a></h3><ol>
+<li>Which asset and data does it touch?</li>
+<li>Who may invoke it, on which resource, under which conditions?</li>
+<li>How can a malicious or mistaken actor abuse it?</li>
+<li>Which design control prevents, detects, or contains the abuse?</li>
+<li>Which automated test or scan provides repeatable evidence?</li>
+</ol>
+<h2 id="lecture--end-to-end-project-workflow" tabindex="-1">End-to-end project workflow<a class="heading-anchor" href="#lecture--end-to-end-project-workflow" aria-label="Link to End-to-end project workflow">#</a></h2><div class="code-shell"><div class="code-bar"><span>text</span><button class="copy-code" type="button" aria-label="Copy code">Copy</button></div><pre><code class="language-text">1. Inventory stakeholders, actors, assets, data, dependencies, and constraints.
+2. Write functional/non-functional and CIA/AAA security requirements.
+3. Add anti-requirements and misuse cases.
+4. Draw physical/logical architecture, DFDs, and trust boundaries.
+5. Apply STRIDE/attack trees and prioritize risks.
+6. Select controls using secure design principles.
+7. Implement least-privilege infrastructure, TLS, secrets, and safe defaults.
+8. Add unit, integration, UI, negative, and failure-path tests.
+9. Automate CI, SCA, SAST, and quality gates.
+10. Perform authorized DAST/fuzzing and validate findings.
+11. Remediate root causes, add regression tests, and rerun checks.
+12. Document evidence and residual risk; update models as the system changes.</code></pre></div></article></main>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">↑</button>
+
+  <script>
+    (() => {
+      const panels = [...document.querySelectorAll('[data-panel-content]')];
+      const tabs = [...document.querySelectorAll('.tab[data-panel]')];
+      const panelButtons = [...document.querySelectorAll('[data-panel]')];
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle');
+      const search = document.getElementById('topic-search');
+      const themeToggle = document.getElementById('theme-toggle');
+      const backToTop = document.getElementById('back-to-top');
+
+      function activatePanel(key, shouldScroll = true) {
+        panels.forEach((panel) => panel.classList.toggle('is-active', panel.dataset.panelContent === key));
+        tabs.forEach((tab) => {
+          const active = tab.dataset.panel === key;
+          tab.classList.toggle('is-active', active);
+          tab.setAttribute('aria-pressed', String(active));
+        });
+        if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+        sidebar.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+
+      function openHashTarget() {
+        const id = decodeURIComponent(location.hash.slice(1));
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        const panel = target.closest('[data-panel-content]');
+        if (panel) activatePanel(panel.dataset.panelContent, false);
+        requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+      }
+
+      panelButtons.forEach((button) => button.addEventListener('click', () => activatePanel(button.dataset.panel)));
+      document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href^="#"]');
+        if (!link) return;
+        const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+        if (!target) return;
+        const panel = target.closest('[data-panel-content]');
+        if (panel) activatePanel(panel.dataset.panelContent, false);
+        sidebar.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+      window.addEventListener('hashchange', openHashTarget);
+
+      document.querySelectorAll('table').forEach((table) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
+
+      document.querySelectorAll('.copy-code').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const code = button.closest('.code-shell').querySelector('code').innerText;
+          try {
+            await navigator.clipboard.writeText(code);
+            button.textContent = 'Copied';
+          } catch {
+            const range = document.createRange();
+            range.selectNodeContents(button.closest('.code-shell').querySelector('code'));
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            button.textContent = 'Selected';
+          }
+          setTimeout(() => { button.textContent = 'Copy'; }, 1400);
+        });
+      });
+
+      search.addEventListener('input', () => {
+        const query = search.value.trim().toLowerCase();
+        document.querySelectorAll('.toc-link').forEach((link) => {
+          link.classList.toggle('is-filtered', query && !link.dataset.search.includes(query));
+        });
+        document.querySelectorAll('.toc-group').forEach((group) => {
+          const visible = [...group.querySelectorAll('.toc-link')].some((link) => !link.classList.contains('is-filtered'));
+          group.classList.toggle('is-filtered', query && !visible);
+        });
+      });
+
+      menuToggle.addEventListener('click', () => {
+        const open = sidebar.classList.toggle('is-open');
+        menuToggle.setAttribute('aria-expanded', String(open));
+      });
+
+      const savedTheme = localStorage.getItem('ssd-lab-theme');
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+      themeToggle.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('ssd-lab-theme', next);
+      });
+
+      window.addEventListener('scroll', () => backToTop.classList.toggle('is-visible', window.scrollY > 700), { passive: true });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      openHashTarget();
+    })();
+  </script>
+</body>
+</html>

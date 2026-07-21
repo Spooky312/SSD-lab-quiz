@@ -1,263 +1,65 @@
-# SSD Lab Quiz
+# ICT2216 / ICT2516C Lab Reference
 
-A comprehensive, searchable reference for the ICT2216 / ICT2516C Secure Software Development labs. SSD Lab Quiz consolidates lab procedures, security concepts, reusable commands, configuration templates, troubleshooting guidance, and platform-specific instructions into one self-contained website.
+Looking for lecture theory and its relationship to the labs? Open the [Lecture Cheat Sheet](lectures.html).
 
-**Website:** [https://spooky312.github.io/SSD-lab-quiz/](https://spooky312.github.io/SSD-lab-quiz/)
+This folder turns the supplied lab PDFs into searchable references:
 
-The generated page works locally as a single HTML file and can be deployed automatically with GitHub Pages.
+- [Lecture Cheat Sheet](lectures.html) - Lectures 1-P1 through 9, quick-recall notes, and direct links from theory to the relevant labs.
+- [CHEAT_SHEET.md](CHEAT_SHEET.md) - concepts, procedures, checklists, deliverables, and troubleshooting by lab.
+- [CODE_SNIPPETS.md](CODE_SNIPPETS.md) - copy-ready commands and configuration templates by lab.
+- [MACOS_GUIDE.md](MACOS_GUIDE.md) - Apple Silicon/macOS setup, command differences, networking, and lab-by-lab notes.
+- [WINDOWS_GUIDE.md](WINDOWS_GUIDE.md) - Windows 11, PowerShell, WSL 2, Docker Desktop, and lab-by-lab notes.
 
-> **Publication notice:** The original course PDFs are labelled “SIT Internal” and are intentionally excluded from this repository by `.gitignore`. Confirm that you have permission to publish the derived reference content before making the repository or Pages site public.
+> **Your environment:** Apple Silicon (`arm64`) Mac with Docker Desktop and Compose v2. Use the macOS guide alongside the other two references.
 
-## What is included
+## Fast navigation
 
-The reference covers the complete supplied lab sequence:
+| Lab | Topic | Cheat sheet | Snippets |
+|---|---|---|---|
+| Lab 1 | Docker Compose, Nginx, MySQL, Git, Selenium | [Open](CHEAT_SHEET.md#lab-1---docker-and-docker-compose) | [Open](CODE_SNIPPETS.md#lab-1---docker-compose-nginx-mysql-git-and-selenium) |
+| Lab 2 | Secure software requirements and SecurityRAT | [Open](CHEAT_SHEET.md#lab-2---secure-software-requirements) | [Open](CODE_SNIPPETS.md#lab-2---securityrat-and-requirement-templates) |
+| X03 | Microsoft Threat Modeling Tool and STRIDE | [Open](CHEAT_SHEET.md#x03---microsoft-threat-modeling-tool) | [Open](CODE_SNIPPETS.md#x03-and-x04---threat-model-records) |
+| X04 | OWASP Threat Dragon | [Open](CHEAT_SHEET.md#x04---owasp-threat-dragon) | [Open](CODE_SNIPPETS.md#x03-and-x04---threat-model-records) |
+| X05 | Nginx reverse proxy, TLS, GitHub Actions | [Open](CHEAT_SHEET.md#x05---web-proxy-tls-and-github-actions) | [Open](CODE_SNIPPETS.md#x05---nginx-reverse-proxy-tls-and-basic-ci) |
+| X06 | OWASP Dependency-Check and Dependabot | [Open](CHEAT_SHEET.md#x06---software-composition-analysis) | [Open](CODE_SNIPPETS.md#x06---owasp-dependency-check-and-dependabot) |
+| X07 | Unit, integration, and UI testing | [Open](CHEAT_SHEET.md#x07---automated-testing-with-github-actions) | [Open](CODE_SNIPPETS.md#x07---node-unit-tests-selenium-and-github-actions) |
+| X08 | ESLint, SARIF, security plugins, CodeQL | [Open](CHEAT_SHEET.md#x08---static-code-analysis) | [Open](CODE_SNIPPETS.md#x08---eslint-sarif-security-plugins-and-codeql) |
+| X09 | SonarQube and SonarScanner | [Open](CHEAT_SHEET.md#x09---sonarqube) | [Open](CODE_SNIPPETS.md#x09---sonarqube-and-sonarscanner) |
+| X11a | OWASP ZAP vulnerability assessment | [Open](CHEAT_SHEET.md#x11a---vulnerability-assessment-with-owasp-zap) | [Open](CODE_SNIPPETS.md#x11a---owasp-zap-baseline-scan) |
+| X11b | Burp Suite Intruder fuzzing | [Open](CHEAT_SHEET.md#x11b---fuzzing-with-burp-suite) | [Open](CODE_SNIPPETS.md#x11b---burp-intruder-test-record) |
 
-| Lab | Main topics |
-|---|---|
-| Lab 1 | Docker, Docker Compose, Nginx, MySQL, a lab Git server, and Selenium |
-| Lab 2 | Secure software requirements, CIA, AAA, traceability, and SecurityRAT |
-| X03 | Microsoft Threat Modeling Tool, data-flow diagrams, and STRIDE |
-| X04 | OWASP Threat Dragon and threat-model reporting |
-| X05 | Nginx reverse proxying, TLS, Certbot, and GitHub Actions |
-| X06 | OWASP Dependency-Check, Dependabot, SCA, and vulnerability triage |
-| X07 | Node.js unit tests, Mocha, Selenium, integration tests, and CI |
-| X08 | ESLint, security plugins, SARIF, GitHub Code Scanning, and CodeQL |
-| X09 | SonarQube, PostgreSQL, SonarScanner, networking, and quality gates |
-| X11a | Authorized vulnerability assessment with OWASP ZAP |
-| X11b | Authorized fuzz testing with Burp Suite Intruder |
+## How to use these files
 
-It also includes dedicated platform guides for:
+1. Read the relevant cheat-sheet section before a lab.
+2. Check the matching section in the [macOS guide](MACOS_GUIDE.md) or [Windows guide](WINDOWS_GUIDE.md).
+3. Copy only the snippet you need and replace every `CHANGE_ME` value.
+4. Compare configuration with the files supplied by the lecturer; those files remain authoritative for grading.
+5. Record evidence as you work: commands, workflow runs, screenshots, reports, findings, fixes, and rerun results.
+6. Never scan, fuzz, or attack a system unless you have explicit authorization.
 
-- macOS and Apple Silicon
-- Windows 11 and Docker Desktop
-- PowerShell, Command Prompt, and WSL 2
-- Cross-platform Docker networking and filesystem differences
+## Scope and conventions
 
-## Website features
+- The content is derived from the [local course PDFs](../sources/).
+- Commands use the modern `docker compose` form. If your installation only supports the older standalone client, substitute `docker-compose`.
+- Templates improve a few formatting or safety issues in the PDFs, such as YAML indentation, ASCII hyphens, portable paths, and avoiding hard-coded secrets.
+- Tool interfaces and third-party actions change. If a lab-provided template conflicts with a snippet, adapt the snippet to the required lab version.
+- Generated reports, tokens, passwords, database files, and TLS private keys should not be committed.
 
-- One self-contained `index.html`
-- Overview, Cheat Sheet, Code Snippets, macOS Guide, and Windows Guide tabs
-- Searchable topic navigation
-- Responsive desktop and mobile layouts
-- Light and dark themes
-- Copy buttons for every code block
-- Accessible headings and keyboard-friendly navigation
-- Print-friendly styling
-- No external JavaScript, CSS, fonts, images, analytics, cookies, or runtime APIs
-- No web framework or server required after generation
-
-## Repository structure
-
-```text
-.
-├── .github/
-│   └── workflows/
-│       └── deploy-pages.yml       # Builds and publishes the site
-├── lab-guides/
-│   ├── README.md                  # Source-document index
-│   ├── CHEAT_SHEET.md             # Concepts, procedures, and checklists
-│   ├── CODE_SNIPPETS.md           # Commands and configuration templates
-│   ├── MACOS_GUIDE.md             # macOS and Apple Silicon guidance
-│   ├── WINDOWS_GUIDE.md           # Windows 11, PowerShell, and WSL guidance
-│   ├── build-html.mjs             # Converts all Markdown into the website
-│   ├── SSD_LAB_REFERENCE.html     # Local generated version with source links
-│   └── github-pages-site/
-│       ├── .nojekyll
-│       └── index.html             # Public deployment artifact
-├── sources/                       # Local internal PDFs; ignored by Git
-├── .gitignore
-├── package.json
-├── package-lock.json
-└── README.md
-```
-
-The `sources/` directory is local reference material. It must remain read-only and is deliberately excluded from version control and deployment.
-
-## Quick start
-
-### Open the existing page
-
-No installation is needed merely to read the guide. Open either generated file in a browser:
-
-- `lab-guides/github-pages-site/index.html` - public-safe GitHub Pages version
-- `lab-guides/SSD_LAB_REFERENCE.html` - local version that can link to supplied PDFs
-
-### Regenerate the page
-
-Requirements:
-
-- Node.js 20 or newer
-- npm
-
-Install the pinned build dependency:
-
-```bash
-npm ci
-```
-
-Build both HTML variants:
-
-```bash
-npm run build
-```
-
-The build produces:
+## Suggested evidence folder
 
 ```text
-lab-guides/SSD_LAB_REFERENCE.html
-lab-guides/github-pages-site/index.html
+evidence/
+├── lab01/
+├── lab02/
+├── x03-threat-model/
+├── x04-threat-dragon/
+├── x05-ci-tls/
+├── x06-sca/
+├── x07-tests/
+├── x08-sast/
+├── x09-sonarqube/
+├── x11a-zap/
+└── x11b-burp/
 ```
 
-The public version contains every guide section but converts links to excluded internal PDFs into non-clickable source labels, preventing broken or accidentally published course-material links.
-
-## Editing content
-
-The Markdown files are the source of truth:
-
-| File | Purpose |
-|---|---|
-| `lab-guides/README.md` | Reference index and navigation |
-| `lab-guides/CHEAT_SHEET.md` | Concepts, workflows, completion lists, and troubleshooting |
-| `lab-guides/CODE_SNIPPETS.md` | Copy-ready commands, YAML, code, and record templates |
-| `lab-guides/MACOS_GUIDE.md` | Mac and Apple Silicon-specific instructions |
-| `lab-guides/WINDOWS_GUIDE.md` | Windows, PowerShell, and WSL 2 instructions |
-
-After changing any source Markdown:
-
-```bash
-npm run build
-```
-
-Commit both the Markdown source changes and the regenerated HTML. This keeps the repository readable on GitHub while ensuring the deployed site matches its source.
-
-## Deploying with GitHub Pages
-
-The repository includes `.github/workflows/deploy-pages.yml`. It performs the following steps:
-
-1. Checks out the repository.
-2. Installs the pinned Markdown build dependency.
-3. Generates the HTML website.
-4. Packages `lab-guides/github-pages-site/` as the Pages artifact.
-5. Deploys the artifact to the `github-pages` environment.
-
-### First deployment
-
-1. Create a GitHub repository.
-2. Push these repository files to the `main` branch.
-3. Open **Settings -> Pages** in the GitHub repository.
-4. Under **Build and deployment**, choose **GitHub Actions** as the source.
-5. Open the **Actions** tab and monitor the “Build and deploy lab reference” workflow.
-6. When it completes, the deployment URL appears in the workflow and under **Settings -> Pages**.
-
-The workflow also supports manual deployment through **Actions -> Build and deploy lab reference -> Run workflow**.
-
-### Repository and site address
-
-The repository belongs under the `spooky312` GitHub account with the name `SSD-lab-quiz`:
-
-```text
-https://github.com/spooky312/SSD-lab-quiz
-```
-
-Its GitHub Pages project address is:
-
-```text
-https://spooky312.github.io/SSD-lab-quiz/
-```
-
-This is GitHub’s standard project-site URL, not a separately registered custom domain. It requires no DNS records and no `CNAME` file.
-
-### Updating the hosted site
-
-Edit the Markdown, regenerate locally if desired, and push to `main`. The workflow rebuilds and deploys the page automatically.
-
-## Git setup example
-
-If this directory is not yet a Git repository:
-
-```bash
-git init
-git branch -M main
-git add .
-git commit -m "Add secure software development lab reference"
-git remote add origin https://github.com/spooky312/SSD-lab-quiz.git
-git push -u origin main
-```
-
-Before committing, always check what will be included:
-
-```bash
-git status
-git diff --cached
-```
-
-Confirm that `sources/`, secrets, generated scanner data, database directories, and captured proxy sessions are not staged.
-
-## Security and privacy
-
-This repository contains educational security-testing guidance. Use it responsibly:
-
-- Only scan, fuzz, intercept, or attack systems when you have explicit authorization.
-- Keep DVWA and other intentionally vulnerable applications isolated from public networks.
-- Never commit passwords, GitHub tokens, SonarQube tokens, private keys, session cookies, `.env` files, or captured credentials.
-- Sanitize ZAP, Burp, SonarQube, SCA, and CI reports before sharing them.
-- Treat generated findings as leads requiring validation, not automatic proof of a vulnerability.
-- Review exceptions and risk acceptances periodically instead of suppressing findings permanently.
-- Do not publish internal course PDFs or other copyrighted material without permission.
-
-The included `.gitignore` excludes common secrets, reports, dependency data, database files, temporary content, and the local `sources/` directory. It is defense-in-depth, not a substitute for reviewing every commit.
-
-## Design and implementation
-
-The site is generated by `lab-guides/build-html.mjs` using the pinned `marked` Markdown parser. CSS and client-side JavaScript are embedded directly into the generated HTML.
-
-The browser-side JavaScript provides only local interface behavior:
-
-- document tabs;
-- internal navigation;
-- topic filtering;
-- code-copy controls;
-- theme preference through `localStorage`; and
-- a back-to-top control.
-
-It does not send data to a server or third party.
-
-## Validation
-
-Before publishing an update, verify:
-
-- `npm ci` completes successfully;
-- `npm run build` completes successfully;
-- the generated site contains all five document panels;
-- topic links reach valid heading anchors;
-- code blocks and tables render correctly;
-- no links reference the excluded `sources/` directory in the public artifact;
-- the page works at desktop and mobile widths;
-- light/dark mode and code-copy buttons work; and
-- no sensitive data or internal PDFs are staged for commit.
-
-## Contributing
-
-When proposing changes:
-
-1. Update the relevant Markdown source rather than editing only the generated HTML.
-2. Keep commands clearly labelled by shell and operating system.
-3. Use placeholders such as `CHANGE_ME` instead of real credentials or domains.
-4. Explain when a snippet intentionally differs from a supplied lab example.
-5. Keep destructive or high-impact security testing explicitly scoped and authorized.
-6. Run `npm run build` and review the generated output.
-7. Include both source and generated changes in the pull request.
-
-## Limitations
-
-- Tool interfaces, container images, action versions, and security recommendations change over time.
-- Templates must be adapted to the actual application, language, architecture, and course requirements.
-- Static analysis and scanners do not replace threat modeling, manual review, or security testing.
-- Microsoft Threat Modeling Tool requires Windows; OWASP Threat Dragon is the cross-platform alternative covered by the labs.
-- GitHub Pages is static hosting and does not provide application-level access control for a normal public site.
-
-## License and attribution
-
-No license has been assigned to the original course materials. Do not assume that the absence of a license grants permission to redistribute them.
-
-Before adding an open-source license to this repository, confirm which original content you own and which content is derived from institutional materials. Retain appropriate attribution and follow institutional policy.
+For each lab, keep a short `README.md` containing the date, environment, exact command, expected result, actual result, evidence link, and any remediation performed.
