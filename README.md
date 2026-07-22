@@ -1,3 +1,6 @@
+# Github Page Link:
+https://spooky312.github.io/SSD-lab-quiz/
+
 # ICT2216 / ICT2516C Lab Reference
 
 Looking for lecture theory and its relationship to the labs? Open the [Lecture Cheat Sheet](lectures.html).
